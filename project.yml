@@ -1,0 +1,12 @@
+name: "Events Collection"
+pipelines:
+  - slug: "clean_events"
+    transformations:
+    
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
