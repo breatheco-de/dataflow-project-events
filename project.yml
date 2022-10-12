@@ -3,7 +3,8 @@ pipelines:
   - slug: "clean_events"
     transformations:
     
-      - clean_events
       - clean_registered
+      - clean_events
       - merge_dataframes
       - clean_merged
+      - create_tags_df

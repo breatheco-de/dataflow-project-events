@@ -13,8 +13,5 @@ def run(df):
     #Drop useless columns in registered_in_events
     df.drop(TO_DROP_REGISTERED, axis=1, inplace=True)
 
-    #Drop null columns in registered
-    df.dropna(axis=1, how='all', inplace=True)
-
     #Drop rows with test emails used for registration
-    df = df2[df2["email"].str.contains("@4geeks") == False]
+    df = df[df["email"].str.contains("@4geeks") == False]
