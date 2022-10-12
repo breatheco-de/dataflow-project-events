@@ -1,2 +1,4 @@
-sources/*
+sources/clean.csv
+sources/events.csv
+sources/registrados_en_eventos.csv
 output/*
