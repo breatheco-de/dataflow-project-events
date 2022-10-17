@@ -2,6 +2,22 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+expected_input = [{
+    'id': [35, 44, 30],
+    'email': ['marketing@4geeksacademy.com','daniela@gmail.com','dani@outlook.com'],
+    'created_at': ['2021-01-22 04:13:22.481858+00:00', '2021-01-22 04:13:22.481858+00:00','2021-01-22 04:13:22.481858+00:00'],
+    'updated_at': ['2021-01-22 04:13:22.481892+00:00','2021-01-22 04:13:22.481892+00:00','2021-01-22 04:13:22.481892+00:00'],
+    'event_id': [86,121,38],
+    'status': ['PENDING','PENDING','PENDING'],
+    'attended_at': ['NaN', 'NaN','NaN']
+}]
+
+expected_output = [{
+    'email': ['daniela@gmail.com','dani@outlook.com'],
+    'event_id': [121,38],
+    'attended_at': ['NaN','NaN']
+}]
+
 def run(df):
     """
     This function takes care of dropping useless and null columns in registered dataset, and also dropping testing rows.

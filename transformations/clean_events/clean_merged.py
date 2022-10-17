@@ -2,6 +2,31 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+expected_input = [{
+    'starting_at': '2020-10-14 16:30:00+00:00',
+    'ending_at': '2020-10-14 16:30:00+00:00',
+    'published_at':'2020-10-14 16:30:00+00:00',
+    'attended_at': 'NaN',
+    'tags':'career-support,event-attendee',
+    'description':'crea tu primera web con html,y css',
+    'title':'Html,y css',
+    'event_id': 38,  
+    'lang':'NaN'
+}]
+
+expected_output = [{
+    'starting_at': pd.to_datetime('2020-10-14 16:30:00'),
+    'ending_at': pd.to_datetime('2020-10-14 16:30:00'),
+    'published_at': pd.to_datetime('2020-10-14 16:30:00'),
+    'attended_at': 'Undefined',
+    'tags':'career-support|event-attendee',
+    'description':'crea tu primera web con html y css',
+    'title':'Html y css',
+    'event_id': 38,  
+    'lang':'es'
+}]
+
+
 def run(merged_df):
     
     #Clean dates

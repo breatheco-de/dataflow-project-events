@@ -2,6 +2,21 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+expected_input = [{
+    'email':'daniela@gmail.com',
+    'event_id': 38,
+    'title': 'Html y css',
+    'tags': 'Career-support|Event-attendee'
+}]
+
+expected_output = [{
+    'event_id': [38,38],
+    'title': ['Html y css','Html y css'],
+    'tags': ['career-support','event-attendee'],
+    'event_registrants': [1,1]
+}]
+
+
 def run(merged_df):
     
     #create a event tags dataframe to explode tags
