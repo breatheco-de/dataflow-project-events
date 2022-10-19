@@ -4,7 +4,7 @@ from datetime import datetime
 
 expected_input = [{
     'id': [121, 38],
-    'title': ['Crea un producto','Hola']
+    'title': ['Crea un producto','Hola'],
     'created_at': ['2020-10-14 16:30:00+00:00','2020-10-14 16:30:00+00:00'],
     'updated_at': ['2020-10-14 16:30:00+00:00','2020-10-14 16:30:00+00:00'],
     'organization_id': [35, 34],

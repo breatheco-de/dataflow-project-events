@@ -1,6 +1,6 @@
 name: "Events Collection"
 pipelines:
-  - slug: "clean_events"
+  - slug: "clean_events_registrees"
     transformations:
     
       - clean_registered
