@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-expected_input = [{
+expected_inputs = [{
     'id': [121, 38],
     'title': ['Crea un producto','Hola'],
     'created_at': ['2020-10-14 16:30:00+00:00','2020-10-14 16:30:00+00:00'],
@@ -32,10 +32,13 @@ def run(df2):
     This function takes care of dropping useless and null columns in events dataset.
     """
     #Useless columns
-    TO_DROP_EVENTS = ['created_at','updated_at','organization_id']
+    TO_DROP_EVENTS = ['created_at','updated_at','organization_id','author_id']
     
     #Drop useless columns in events
     df2.drop(TO_DROP_EVENTS, axis=1, inplace=True)
 
     #Drop null columns in events
     df2.dropna(axis=1, how='all', inplace=True)
+
+    return df2
+

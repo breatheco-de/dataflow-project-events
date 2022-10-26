@@ -47,9 +47,6 @@ def run(merged_df):
     merged_df['published_at'] = merged_df['published_at'].apply(pd.to_datetime)
 
 
-
-
-
     #Replacements
 
     #Replacing commas in certain columns
@@ -77,3 +74,7 @@ def run(merged_df):
     merged_df['lang'] = np.where((merged_df['event_id'].isin([39,43,187,45,44,190,144,50,51,126,180,191,132,129,120,185,188,197,200,
                                                         194,199,201,202,206,216,208,252,214,251,254,368,357,124,207,210,215])),'en', 
                                                         merged_df['lang'])
+
+    return
+
+    

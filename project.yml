@@ -1,10 +1,28 @@
 name: "Events Collection"
 pipelines:
-  - slug: "clean_events_registrees"
-    transformations:
-    
+  - slug: "clean_registrees"
+    sources:
+      - registrados_en_eventos   
+    transformations: 
       - clean_registered
+
+  - slug: "clean_events"
+    sources: 
+      - events
+    transformations:
       - clean_events
-      - merge_dataframes
-      - clean_merged
-      - create_tags_df
+      
+      
+  # - slug: "merge_dataframes"
+  #   sources:
+  #     - clean_events
+  #   transformations:
+  #     - merge_dataframes
+  #     - clean_merged
+
+  # - slug: "create_tags_df"
+  #   sources:
+
+  #   transformations:    
+  #     - create_tags_dataframe
+
