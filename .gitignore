@@ -1,4 +1,6 @@
 sources/clean.csv
 sources/events.csv
 sources/registrados_en_eventos.csv
+sources/clean_events.csv
+
 output/*
