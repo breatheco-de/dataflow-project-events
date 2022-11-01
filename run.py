@@ -6,44 +6,29 @@ import pandas
 from colorama import Fore, Back, Style
 from utils.core import load_pipelines_from_project, get_params, load_pipelines_from_project, get_transformation
 
-pipeline, sources = get_params()
+
+pipeline, source = get_params()
 if pipeline is None:
     all = load_pipelines_from_project()
     raise Exception(f'Please specify pipline to load from the following options: ' +
                     ",".join([p['slug'] for p in all]))
 else:
     pipeline = load_pipelines_from_project(pipeline)[0]
-    if "sources" not in pipeline:
-        raise Exception(
-            f"Pipeline {pipeline['slug']} is missing sources on the YML")
-    else:
-        sources = pipeline['sources']
 
 
-if sources is None or len(sources) == 0:
+if source is None:
     raise Exception(
-        f'Missing CSV Files to for source from when running pipeline {pipeline}.\n Hint: please specify the name of the CSV files on the project.yml')
+        f'Missing CSV File to for source from when running pipeline {pipeline}.\n Hint: please specify the name of the CSV file name')
 else:
-    for i in range(len(sources)):
-        if ".csv" not in sources[i]:
-            sources[i] = sources[i] + ".csv"
+    if ".csv" not in source:
+        source = source + ".csv"
 
-
-dfs = []
-for source in sources:
-    dfs.append(pandas.read_csv("sources/"+source))
-
-df_out = None
-count = 0
+df = pandas.read_csv("sources/"+source)
 for t in pipeline['transformations']:
-    count += 1
-    print(Fore.WHITE +
-          f"[] Applying {count} transformation {t} with {len(dfs)} sources...")
+    print(Fore.WHITE+f"[] Applying {t}...")
     run, _in, _out = get_transformation(pipeline['slug'], t)
-    if df_out is not None:
-        dfs[0] = df_out
-    df_out = run(*dfs)
+    df = run(df)
 
 file_name = source.split('.')[0]
-df_out.to_csv(
-    f"output/{pipeline['slug']}{str(round(time.time()))}.csv")
+df.to_csv(
+    f"output/{file_name}-{pipeline['slug']}{str(round(time.time()))}.csv")

@@ -10,6 +10,7 @@ colorama = "*"
 pandas = "*"
 numpy = "*"
 python-slugify = "*"
+phone_iso3166 = '*'
 
 [dev-packages]
 

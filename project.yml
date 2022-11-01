@@ -4,13 +4,14 @@ pipelines:
     sources:
       - registrados_en_eventos   
     transformations: 
-      - clean_registered
+      - drop_useless_columns
+      - drop_test_rows
 
   - slug: "clean_events"
     sources: 
       - events
     transformations:
-      - clean_events
+      - drop_useless
       
       
   # - slug: "merge_dataframes"
