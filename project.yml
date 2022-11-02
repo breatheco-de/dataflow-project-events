@@ -19,14 +19,16 @@ pipelines:
   - slug: "merge_dataframes"
     sources:
       - cleaned-event-registries
+      - cleaned-heroku-events
     destination: bigquery-events
     transformations:
       - merge_dataframes
       - clean_merged
 
-  # - slug: "create_tags_df"
-  #   sources:
-
-  #   transformations:    
-  #     - create_tags_dataframe
+# - slug: "new_tags_dataframe"
+#   sources:
+#       - cleaned-event-registries
+#    destination: bigquery-tags
+#   transformations:
+#       - create_tags_df
 
