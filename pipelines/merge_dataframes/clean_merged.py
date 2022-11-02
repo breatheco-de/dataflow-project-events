@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-expected_input = [{
+expected_inputs = [{
     'starting_at': '2020-10-14 16:30:00+00:00',
     'ending_at': '2020-10-14 16:30:00+00:00',
     'published_at':'2020-10-14 16:30:00+00:00',

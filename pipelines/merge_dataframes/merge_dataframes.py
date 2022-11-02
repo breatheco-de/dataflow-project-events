@@ -2,15 +2,15 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-expected_input = [[{
-    'email': ['daniela@gmail.com','dani@outlook.com'],
-    'event_id': [121,38],
+expected_inputs = [[{
+    'email': ['aa','bb'],
+    'event_id': ['aa','bb'],
     'attended_at': ['NaN','NaN']
 }],
 
 [{
-    'id': [121, 38],
-    'title': ['Crea un producto','Hola'],
+    'id': ['aa', 'bb'],
+    'title': ['aa','bb'],
     'excerpt':['aa','bb'],
     'eventbrite_sync_description':['aa','bb'],
     'eventbrite_url':['aa','bb'],
@@ -19,10 +19,10 @@ expected_input = [[{
 }]]
 
 expected_output = [{
-    'email': ['daniela@gmail.com','dani@outlook.com'],
-    'event_id': [121,38],
+    'email': ['aa','bb'],
+    'event_id': ['aa','bb'],
     'attended_at': ['NaN','NaN'],
-    'title': ['Crea un producto','Hola']
+    'title': ['aa','bb']
 }]
 
 

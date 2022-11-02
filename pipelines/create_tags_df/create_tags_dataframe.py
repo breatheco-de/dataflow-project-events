@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-expected_input = [{
+expected_inputs = [{
     'email':'daniela@gmail.com',
     'event_id': 38,
     'title': 'Html y css',
