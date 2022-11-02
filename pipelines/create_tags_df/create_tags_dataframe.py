@@ -35,3 +35,5 @@ def run(merged_df):
 
     tags_df = tags_df.explode('tags').drop_duplicates()
 
+    return tags_df
+
