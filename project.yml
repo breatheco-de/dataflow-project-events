@@ -2,24 +2,27 @@ name: "Events Collection"
 pipelines:
   - slug: "clean_registrees"
     sources:
-      - registrados_en_eventos   
+      - heroku-checkins   
+    destination: cleaned-event-registries
     transformations: 
       - drop_useless_columns
       - drop_test_rows
 
   - slug: "clean_events"
     sources: 
-      - events
+      - heroku-events
+    destination: cleaned-heroku-events
     transformations:
       - drop_useless
       
       
-  # - slug: "merge_dataframes"
-  #   sources:
-  #     - clean_events
-  #   transformations:
-  #     - merge_dataframes
-  #     - clean_merged
+  - slug: "merge_dataframes"
+    sources:
+      - cleaned-event-registries
+    destination: bigquery-events
+    transformations:
+      - merge_dataframes
+      - clean_merged
 
   # - slug: "create_tags_df"
   #   sources:
