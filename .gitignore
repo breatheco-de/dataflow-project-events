@@ -1,2 +1,11 @@
+# exclude everything
 sources/*
+
+# exception to the rule
+!sources/.gitkeep 
+
+# exclude everything
 output/*
+
+# exception to the rule
+!output/.gitkeep 

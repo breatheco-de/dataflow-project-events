@@ -21,7 +21,7 @@ def run(df):
     
     #create a event tags dataframe to explode tags
 
-    tags_df = df.groupby(['event_id','title','tags'])['tags'].agg(['count']).reset_index()
+    tags_df = df.groupby(['event_id','title','starting_at','tags'])['tags'].agg(['count']).reset_index()
 
     tags_df.rename(columns = {'count':'event_registrants'}, inplace = True)
 
