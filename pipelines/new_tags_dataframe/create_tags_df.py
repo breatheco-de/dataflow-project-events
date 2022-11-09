@@ -5,12 +5,14 @@ from datetime import datetime
 expected_inputs = pd.DataFrame({
     'email': ['daniela@gmail.com'],
     'event_id': [38],
+    'starting_at':[2022],
     'title': ['Html y css'],
     'tags': ['Career-support|Event-attendee']
 })
 
 expected_output = pd.DataFrame({
     'event_id': [38,38],
+    'starting_at':[2022, 2022],
     'title': ['Html y css','Html y css'],
     'tags': ['career-support','event-attendee'],
     'event_registrants': [1,1]
