@@ -7,6 +7,13 @@ def to_dt(value):
     return datetime.strptime(value, '%m/%d/%Y %H:%M:%S')
 
 
+stream = pd.DataFrame({
+    "User_ID": ['U0426RW6CR5', 'U0426RW6CR5', 'U0426RW6CR5', 'ASDSDFSDF'],
+    "Timestamp": [to_dt('11/11/2022 15:23:37'), to_dt('11/11/2022 15:25:37'), to_dt('11/11/2022 17:23:37'), to_dt('11/11/2022 17:24:37')],
+    # "Timestamp_Thread": [to_dt('11/11/2022 15:23:37'), to_dt('11/11/2022 15:25:37'), to_dt('11/11/2022 17:23:37')],
+    "Text": ["hola", 'papi', 'otro', 'lejos'],
+})
+
 # list of values in columns
 expected_inputs = pd.DataFrame({
     "User_ID": ['U0426RW6CR5', 'U0426RW6CR5', 'U0426RW6CR5', 'ASDSDFSDF'],

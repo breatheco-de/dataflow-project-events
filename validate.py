@@ -55,17 +55,6 @@ def validate_trans(q, t, _errors):
     try:
         run, _in, _out, _stream = get_transformation(q, t)
 
-        kwargs = {}
-        if _stream is not None:
-            if not isinstance(_stream, dict):
-                raise Exception(
-                    f"Stream object must be a dict but received {type(_stream)}")
-            else:
-                kwargs['stream'] = _stream
-
-        if _in is None or (isinstance(_in, list) and len(_in) == 0):
-            raise Exception("Transformation expected_inputs are empty")
-
         if isinstance(_in, pd.DataFrame):
             _in = [_in]
 
@@ -77,13 +66,37 @@ def validate_trans(q, t, _errors):
         if len(_in) > 0 and not isinstance(_in[0], pd.DataFrame):
             _in = to_df(_in)
 
+        if _in is None or (isinstance(_in, list) and len(_in) == 0):
+            raise Exception("Transformation expected_inputs are empty")
+
         # protect in from mutations
         in_backup = [df.copy() for df in _in]
 
-        output = run(*_in, **kwargs)
-        if output is None:
-            raise Exception("Transformation needs to return a dataset")
-        output = output.to_dict('records')
+        if _stream is not None:
+            _stream = to_list(_stream)[0]
+            print(_stream)
+            print(
+                Fore.BLUE + f'Found {len(_stream)} streams to validate, will run transformation {len(_stream)} times')
+        else:
+            _stream = [None]
+
+        output = None
+        buffer = None
+        for stream_index in range(len(_stream)):
+
+            kwargs = {}
+            if _stream[stream_index] is not None:
+                print(Fore.BLUE + f' Stream {stream_index} ...')
+                kwargs['stream'] = _stream[stream_index]
+
+            if buffer is not None:
+                _in[0] = buffer
+
+            output = run(*_in, **kwargs)
+            if output is None:
+                raise Exception("Transformation needs to return a dataset")
+            buffer = output
+            output = output.to_dict('records')
 
         # just in case the _in variable has mutated
         _in = in_backup
