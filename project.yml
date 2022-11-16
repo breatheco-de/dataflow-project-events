@@ -1,10 +1,10 @@
-name: "Events Collection"
+name: "Public Support Collection"
 pipelines:
-  - slug: "clean"
+  - slug: "clean_publicsupport_fs_messages"
     sources:
       - support-channels   
     destination: cleaned-support-channels
     transformations: 
-      - transformation-1
-      - transformation-2
+      - merge_messages
+      # - transformation-2
 

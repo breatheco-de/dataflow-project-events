@@ -53,7 +53,15 @@ def to_list(_dfs):
 
 def validate_trans(q, t, _errors):
     try:
-        run, _in, _out = get_transformation(q, t)
+        run, _in, _out, _stream = get_transformation(q, t)
+
+        kwargs = {}
+        if _stream is not None:
+            if not isinstance(_stream, dict):
+                raise Exception(
+                    f"Stream object must be a dict but received {type(_stream)}")
+            else:
+                kwargs['stream'] = _stream
 
         if _in is None or (isinstance(_in, list) and len(_in) == 0):
             raise Exception("Transformation expected_inputs are empty")
@@ -72,7 +80,7 @@ def validate_trans(q, t, _errors):
         # protect in from mutations
         in_backup = [df.copy() for df in _in]
 
-        output = run(*_in)
+        output = run(*_in, **kwargs)
         if output is None:
             raise Exception("Transformation needs to return a dataset")
         output = output.to_dict('records')
@@ -100,10 +108,6 @@ def validate_trans(q, t, _errors):
         print(Fore.RED + q + '.' + t + ' ❌', end='')
     elif len(diff.keys()) != 0:
         print(Fore.RED + q + '.' + t + ' ❌', end='')
-        # if "values_changed" in diff:
-        #     diff = diff["values_changed"]
-        # if "type_changes" in diff:
-        #     diff = diff["type_changes"]
         _errors[q + '.' +
                 t] = "\n".join(f"{k}: {v} \n" for k, v in diff.items())
     elif len(in_out_same.keys()) == 0:
@@ -118,12 +122,17 @@ def validate_trans(q, t, _errors):
     return _errors
 
 
-pipeline, sources = get_params()
+# _stream_path is ignored because we are unit testing
+pipeline, sources, _stream_path = get_params()
 errors = {}
 pipelines = load_pipelines_from_project()
 
 
 for pipe in pipelines:
+
+    if pipeline is not None and pipeline != pipe['slug']:
+        continue
+
     if "sources" not in pipe:
         raise Exception(
             f"Pipeline {pipe['slug']} is missing sources on the YML")
