@@ -19,18 +19,28 @@ expected_output = pd.DataFrame({'email':output_emails})
 
 def run(df):
     """
-    This function takes care of dropping testing rows.
+    This function cleans the initial dataframe.
     """
     
-    print('Shape before dropping test rows', df.shape)
+    print('Shape before cleaning initial dataframe', df.shape)
 
-    #Drop rows with test emails used for registration
+    
+    #Creating 2 new columns
+    df['Is_a_question'] = np.where(df['Timestamp_Thread'].isnull(), 1, 0)
 
-    # Drop testing rows
-    df = df[df["email"].str.contains("@4geeks") == False]
-    df = df[df["email"].str.contains("@stcsolutions") == False]
+    support_agents = ['1','5301']
+    df['Is_agent'] = np.where(df['User_ID'].isin(support_agents), 1, 0)
+
+    #Encoding column
+    df['Is_Bot'] = np.where(df['Is_Bot'] == True, 1, 0)
+
+    #Converting timestamp column
+    df['Datetime'] = pd.to_datetime(df['Timestamp'])
+    df['Datetime_Thread'] = pd.to_datetime(df['Timestamp_Thread'])
 
 
-    print('Shape after dropping test rows', df.shape)
+    print('Shape after cleaning initial dataframe', df.shape)
     
     return df
+
+
