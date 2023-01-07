@@ -5,7 +5,11 @@ sources/*
 !sources/.gitkeep 
 
 # exclude everything
-output/*
+outputs/*
 
 # exception to the rule
-!output/.gitkeep 
+!outputs/.gitkeep 
+
+# Don't save changes to original notebooks
+notebooks/draft_cleaning_notebook.ipynb
+notebooks/second_method_notebook.ipynb
