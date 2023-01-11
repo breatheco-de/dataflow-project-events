@@ -40,14 +40,13 @@ Q_Full_Name = ['Bot', 'Name_3', 'Tomas Gonzalez', 'Tomas Gonzalez']
 Q_Email = ['Bot@gmail.com', 'Email_3@gmail.com', 'tgonzalez@4geeksacademy.com', 'tgonzalez@4geeksacademy.com']
 Q_Permalink = ['Permalink_2', 'Permalink_5', 'Permalink_4', 'Permalink_7']
 Q_Slack_username = ['Bot', 'User_3', 'tgonzalez', 'tgonzalez']
-Is_Bot = [1, 0, 0, 0]
-Is_a_question = [1, 1, 1, 1]
+Q_from_Bot = [1, 0, 0, 0]
 Q_from_Agent = [0, 0, 1, 1]
 
 
 dict_output = {'Q_User_ID':Q_User_ID, 'Q_Datetime':Q_Datetime, 'Q_Text':Q_Text, 'Q_message_ID':Q_message_ID, 'Channel_Slug':Channel_Slug,
                 'Q_Timestamp':Q_Timestamp, 'Q_Full_Name':Q_Full_Name, 'Q_Email':Q_Email, 'Q_Permalink':Q_Permalink,
-                'Q_Slack_username':Q_Slack_username, 'Is_Bot':Is_Bot, 'Is_a_question':Is_a_question, 'Q_from_Agent':Q_from_Agent}
+                'Q_Slack_username':Q_Slack_username, 'Q_from_Bot':Q_from_Bot, 'Q_from_Agent':Q_from_Agent}
 
 
 # Expected output
@@ -86,7 +85,7 @@ def run(df):
 
     # Merge the dataframe to its previous columns and delete auxiliary columns
     df_questions = df_questions.merge(Q_df, how = 'left', left_on = ['User_ID', 'Datetime', 'Text'],
-                    right_on = ['User_ID', 'Datetime', 'Text']).drop(['Diff_in_seconds','Diff_abs','Not_previous_author','Text_raw'], axis=1)
+                    right_on = ['User_ID', 'Datetime', 'Text']).drop(['Diff_in_seconds','Diff_abs','Not_previous_author','Text_raw', 'Is_a_question'], axis=1)
 
     # Merge text in rows that have the same Q_message_ID
     df_questions['Text'] = df_questions.groupby(['Q_message_ID'])['Text'].transform(lambda x : ' '.join(x))
@@ -101,7 +100,7 @@ def run(df):
     df_questions.rename(columns={'User_ID':'Q_User_ID', 'Datetime':'Q_Datetime', 'Text':'Q_Text', 
                             'Timestamp':'Q_Timestamp', 'Full_Name':'Q_Full_Name', 'Email':'Q_Email',
                             'Permalink':'Q_Permalink', 'Slack_username':'Q_Slack_username', 
-                            'Is_agent':'Q_from_Agent'},inplace=True)
+                            'Is_Bot':'Q_from_Bot', 'Is_agent':'Q_from_Agent'},inplace=True)
 
     # Drop duplicates
     df_questions.drop_duplicates(subset=["Q_Timestamp", "Q_Text"], keep='first', inplace=True)
