@@ -2,7 +2,7 @@ name: "Public Support Collection"
 pipelines:
   - slug: "clean_publicsupport_fs_messages"
     sources:
-      - support_channels   
+      - slack_support_channels   
     destination: cleaned-support-channels
     transformations: 
       - new_columns
