@@ -2,9 +2,10 @@ name: "Public Support Collection"
 pipelines:
   - slug: "clean_publicsupport_fs_messages"
     sources:
-      - support-channels   
+      - support_channels   
     destination: cleaned-support-channels
     transformations: 
-      - merge_messages
-      # - transformation-2
-
+      - new_columns
+      - questions_dataframe
+      - answers_dataframe
+      - merge_dataframes

@@ -30,5 +30,3 @@ def run(df):
     print('Shape after cleaning initial dataframe', df.shape)
     
     return df
-
-
