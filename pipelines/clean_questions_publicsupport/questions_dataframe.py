@@ -76,7 +76,7 @@ def run(df):
     # 1. The ID should change if there is more than 300 seconds between one question and the next
     # 2. The ID ahould change if the author of the previous question is different from the author of the current question
     def create_QuestionId(df_x):
-        for group in df.groupby(['User_ID']):
+        for group in df.groupby('User_ID'):
             df_x['Q_message_ID'] = df_x['Diff_abs'].gt(300).cumsum() + 1 + df_x['Not_previous_author'].cumsum()
         return df_x
 
