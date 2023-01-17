@@ -10,6 +10,5 @@ outputs/*
 # exception to the rule
 !outputs/.gitkeep 
 
-# Don't save changes to original notebooks
-notebooks/draft_cleaning_notebook.ipynb
-notebooks/second_method_notebook.ipynb
+# exclude everything
+output/*
