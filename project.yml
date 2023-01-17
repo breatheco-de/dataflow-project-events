@@ -1,11 +1,25 @@
 name: "Public Support Collection"
 pipelines:
-  - slug: "clean_publicsupport_fs_messages"
+  - slug: "clean_questions_publicsupport"
     sources:
       - support_channels   
-    destination: cleaned-support-channels
+    destination: cleaned-questions-publicsupport
     transformations: 
       - new_columns
       - questions_dataframe
+  
+  - slug: "clean_answers_publicsupport"
+    sources:
+      - support_channels
+    destination: cleaned-answers-publicsupport
+    transformations:
+      - new_columns
       - answers_dataframe
+
+  - slug: "merge_messages_publicsupport"
+    sources:
+      - clean_questions_publicsupport1673968978484  # Output from clean_questions_publicsupport
+      - clean_answers_publicsupport167396900894   #Output from clean_answers_publicsupport
+    destination: cleaned-messages-publicsupport
+    transformations:
       - merge_dataframes
