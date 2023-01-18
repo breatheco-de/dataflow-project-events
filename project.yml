@@ -20,6 +20,6 @@ pipelines:
     sources:
       - cleaned-questions-publicsupport  # Output from clean_questions_publicsupport
       - cleaned-answers-publicsupport   #Output from clean_answers_publicsupport
-    destination: cleaned-messages-publicsupport
+    destination: cleaned-support-channels
     transformations:
       - merge_dataframes
