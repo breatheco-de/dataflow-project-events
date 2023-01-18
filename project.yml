@@ -2,7 +2,7 @@ name: "Public Support Collection"
 pipelines:
   - slug: "clean_questions_publicsupport"
     sources:
-      - support_channels   
+      - slack_support_channels   
     destination: cleaned-questions-publicsupport
     transformations: 
       - new_columns
