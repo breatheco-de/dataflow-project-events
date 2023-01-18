@@ -91,7 +91,7 @@ def run(df):
     # 2. The ID should change if the author of the previous answer is different from the author of the current answer
     # 2. The ID should change if there is a difference between timestamp_thread from one answer and the next
     def create_AnswerId(df):
-        for group in df.groupby(['User_ID']):
+        for group in df.groupby('User_ID'):
             df['A_message_ID'] = df['Diff_abs'].gt(300).cumsum() + 1 + df['Not_previous_author'].cumsum() + df['Diff_Thread']
         return df
     
