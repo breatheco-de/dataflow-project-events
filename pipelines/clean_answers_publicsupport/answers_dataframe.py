@@ -104,6 +104,8 @@ def run(df):
                 'Diff_abs', 'Not_previous_author', 'Diff_Thread', 'Text_raw', 'Is_a_question'], axis=1)
 
     # Calculate the response time
+    print(df_answers['Datetime'], typeof(df_answers['Datetime']))
+    print(df_answers['Datetime_Thread'], typeof(df_answers['Datetime_Thread']))
     df_answers['Response_time'] = df_answers['Datetime'] - df_answers['Datetime_Thread']
 
     # Merge text in rows that have the same A_message_ID
