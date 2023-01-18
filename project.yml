@@ -18,8 +18,8 @@ pipelines:
 
   - slug: "merge_messages_publicsupport"
     sources:
-      - clean_questions_publicsupport1673968978484  # Output from clean_questions_publicsupport
-      - clean_answers_publicsupport167396900894   #Output from clean_answers_publicsupport
+      - cleaned-questions-publicsupport  # Output from clean_questions_publicsupport
+      - cleaned-answers-publicsupport   #Output from clean_answers_publicsupport
     destination: cleaned-messages-publicsupport
     transformations:
       - merge_dataframes
