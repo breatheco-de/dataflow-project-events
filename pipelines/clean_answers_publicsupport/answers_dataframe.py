@@ -65,6 +65,7 @@ expected_output = pd.DataFrame.from_dict(dict_output)
 def run(df):
 
     """This function creates the dataframe for answers and some new columns"""
+    print("a.1")
 
     # Create dataframe only for answers
     A_df = df[df['Is_a_question'] == 0]
@@ -81,6 +82,8 @@ def run(df):
     # Create new column that indicates if the author of the previous answer is different from the author of the current answer
     df_answers['Not_previous_author'] = df_answers['User_ID'].ne(df_answers['User_ID'].shift().bfill()).astype(int)
 
+    print("a.2")
+      
     # Create new column that indicates the difference in seconds between timestamp_thread from answers from the same user
     df_answers['Diff_Thread'] = (df_answers.sort_values('Datetime_Thread').groupby('User_ID').Datetime_Thread.diff())
     df_answers['Diff_Thread'] = df_answers['Diff_Thread'].fillna(pd.Timedelta(seconds=0))
@@ -95,6 +98,7 @@ def run(df):
             df['A_message_ID'] = df['Diff_abs'].gt(300).cumsum() + 1 + df['Not_previous_author'].cumsum() + df['Diff_Thread']
         return df
     
+    print("a.3")
     # Apply function   
     create_AnswerId(df_answers)
 
@@ -104,6 +108,7 @@ def run(df):
                 'Diff_abs', 'Not_previous_author', 'Diff_Thread', 'Text_raw', 'Is_a_question'], axis=1)
 
     # Calculate the response time
+    print("a.4")
     print(df_answers['Datetime'], typeof(df_answers['Datetime']))
     print(df_answers['Datetime_Thread'], typeof(df_answers['Datetime_Thread']))
     df_answers['Response_time'] = df_answers['Datetime'] - df_answers['Datetime_Thread']
