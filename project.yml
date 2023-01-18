@@ -10,7 +10,7 @@ pipelines:
   
   - slug: "clean_answers_publicsupport"
     sources:
-      - support_channels
+      - slack_support_channels
     destination: cleaned-answers-publicsupport
     transformations:
       - new_columns
