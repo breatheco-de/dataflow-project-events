@@ -74,6 +74,18 @@ def run(df):
     # Encode the column to know if it is a message from a Bot
     df['Is_Bot'] = np.where(df['Is_Bot'] == True, 1, 0)
 
+    # Delete "+00:00"
+    def correct_timestamp(time):
+        if pd.isna(time):
+            return time
+        else:
+            sep = '+'
+            stripped = time.split(sep, 1)[0]
+            return stripped
+    
+    df['Timestamp'] = df['Timestamp'].apply(correct_timestamp)
+    df['Timestamp_Thread'] = df['Timestamp_Thread'].apply(correct_timestamp)
+
     # Change type to datetime
     df['Datetime'] = pd.to_datetime(df['Timestamp'])
     df['Datetime_Thread'] = pd.to_datetime(df['Timestamp_Thread'])
