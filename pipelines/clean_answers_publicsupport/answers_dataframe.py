@@ -71,54 +71,70 @@ def run(df):
 
     answers = A_df.groupby(['User_ID','Datetime', 'Datetime_Thread'])[['Text']]
     df_answers = pd.DataFrame(answers.sum().reset_index())
-
+ 
     # Create new column to know the difference in seconds between answers from the same user
+
+    # df_answers['Datetime'] = pd.to_datetime(df_answers['Datetime'])
+    df_answers['Datetime'] = pd.to_datetime(df_answers['Datetime'], utc=True)
+    # The line above what added by CHARLY
     df_answers['Diff_in_seconds'] = (df_answers.sort_values('Datetime').groupby('User_ID').Datetime.diff())
-    df_answers['Diff_in_seconds'] = df_answers['Diff_in_seconds'].fillna(pd.Timedelta(seconds=0))
-    df_answers['Diff_in_seconds']=df_answers['Diff_in_seconds']/np.timedelta64(1,'s')
+    df_answers['Diff_in_seconds'] = df_answers['Diff_in_seconds'].fillna(pd.Timedelta(seconds=0)).dt.total_seconds()
+    df_answers['Diff_in_seconds']=df_answers['Diff_in_seconds']/1
+     # The line above what added by CHARLY
     df_answers['Diff_abs'] = df_answers['Diff_in_seconds'].abs()
 
-    # Create new column that indicates if the author of the previous answer is different from the author of the current answer
+    # # Create new column that indicates if the author of the previous answer is different from the author of the current answer
     df_answers['Not_previous_author'] = df_answers['User_ID'].ne(df_answers['User_ID'].shift().bfill()).astype(int)
       
-    # Create new column that indicates the difference in seconds between timestamp_thread from answers from the same user
+    # # Create new column that indicates the difference in seconds between timestamp_thread from answers from the same user
+    # df_answers['Datetime_Thread'] = pd.to_datetime(df_answers['Datetime_Thread'])
+    df_answers['Datetime_Thread'] = pd.to_datetime(df_answers['Datetime_Thread'], utc=True)
+     # The line above what added by CHARLY
     df_answers['Diff_Thread'] = (df_answers.sort_values('Datetime_Thread').groupby('User_ID').Datetime_Thread.diff())
     df_answers['Diff_Thread'] = df_answers['Diff_Thread'].fillna(pd.Timedelta(seconds=0))
     df_answers['Diff_Thread'] = df_answers['Diff_Thread']/np.timedelta64(1,'s')
 
-    # Create function to indicate message ID following the criteria:
-    # 1. The ID should change if there is more than 300 seconds between one answer and the next
-    # 2. The ID should change if the author of the previous answer is different from the author of the current answer
-    # 3. The ID should change if there is a difference between timestamp_thread from one answer and the next
+    # # Create function to indicate message ID following the criteria:
+    # # 1. The ID should change if there is more than 300 seconds between one answer and the next
+    # # 2. The ID should change if the author of the previous answer is different from the author of the current answer
+    # # 3. The ID should change if there is a difference between timestamp_thread from one answer and the next
     def create_AnswerId(df_x):
         for group in df_x.groupby('User_ID'):
             df_x['A_message_ID'] = df_x['Diff_abs'].gt(300).cumsum() + 1 + df_x['Not_previous_author'].cumsum() + df_x['Diff_Thread']
         return df_x
     
-    # Apply function   
-    create_AnswerId(df_answers)
+    # # Apply function   
+    
+    df_answers = create_AnswerId(df_answers)
 
-    # Merge the dataframe to its previous columns and delete auxiliary columns
-    df_answers = df_answers.merge(A_df, how = 'left', left_on = ['User_ID', 'Datetime', 'Datetime_Thread', 'Text'],
-                right_on = ['User_ID', 'Datetime', 'Datetime_Thread', 'Text']).drop(['Diff_in_seconds', 
-                'Diff_abs', 'Not_previous_author', 'Diff_Thread', 'Text_raw', 'Is_a_question'], axis=1)
+    # # Merge the dataframe to its previous columns and delete auxiliary columns
+ 
+    df_answers = pd.concat([df_answers,A_df], axis = 1)
+    df_answers = df_answers.drop(['Diff_in_seconds', 'Diff_abs', 'Not_previous_author', 'Diff_Thread', 'Text_raw', 'Is_a_question'], axis=1)
+    # # Calculate the response time
 
-    # Calculate the response time
-    df_answers['Response_time'] = df_answers['Datetime'] - df_answers['Datetime_Thread']
+   
+    # df_answers.dropna(subset=['Datetime','Datetime_Thread'], inplace=True)
+    # df_answers = df_answers[~df_answers.index.duplicated(keep='first')]
+    # df_answers = df_answers.reset_index(drop=True)
 
-    # Merge text in rows that have the same A_message_ID
+    # df_answers['Response_time'] = df_answers['Datetime'] - df_answers['Datetime_Thread']
+
+    # # Merge text in rows that have the same A_message_ID
+    # A_messa_ID does not exits...
+    df_answers['Text'] = df_answers['Text'].astype(str)
     df_answers['Text'] = df_answers.groupby(['A_message_ID'])['Text'].transform(lambda x : ' '.join(x))
 
-    # Merge timestamp in rows that have the same A_message_ID
+    # # Merge timestamp in rows that have the same A_message_ID
     df_answers['Timestamp'] = df_answers.groupby(['A_message_ID'])['Timestamp'].transform(lambda x : ','.join(map(str, x)))
 
-    # Rename columns to make it explicit that they correspond to answers
+    # # Rename columns to make it explicit that they correspond to answers
     df_answers.rename(columns={'User_ID':'A_User_ID', 'Datetime':'A_Datetime', 'Text':'A_Text', 'Timestamp':'A_Timestamp', 
                             'Timestamp_Thread':'Key_to_Q_Timestamp', 'Full_Name':'A_Full_Name', 'Email':'A_Email', 
                             'Permalink':'A_Permalink', 'Slack_username':'A_Slack_username', 'Is_Bot':'A_from_Bot', 
                             'Is_agent':'A_from_Agent', 'Datetime_Thread':'A_Datetime_Thread'},inplace=True)
 
-    # Drop duplicates
+    # # Drop duplicates
     df_answers.drop_duplicates(subset=['A_Timestamp', 'A_Text'], keep='first', inplace=True)
 
     return df_answers
