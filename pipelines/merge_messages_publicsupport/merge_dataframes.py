@@ -109,9 +109,10 @@ def run(df_questions, df_answers):
                 return timestamp
     
         return None
-
+    df_answers['Key_to_Q_Timestamp'] = df_answers['Key_to_Q_Timestamp'].astype(str)
     df_answers['Key_to_Q_Timestamp'] =  df_answers['Key_to_Q_Timestamp'].apply(autocompletion_merged_timestamps)
     df_answers['Key_to_Q_Timestamp'] =  np.where(df_answers['Key_to_Q_Timestamp'].isnull(), str(df_answers['A_Datetime_Thread']), df_answers['Key_to_Q_Timestamp'])
+
 
     final_df = pd.merge(df_questions, df_answers, left_on = ['Q_Timestamp', 'Channel_Slug'], right_on = ['Key_to_Q_Timestamp', 'Channel_Slug'], how = 'left')
     
