@@ -23,9 +23,19 @@ dict_inputs = {'Channel_ID': Channel_ID, 'Channel_Slug':Channel_Slug, 'Timestamp
                 'Email':Email, 'Permalink':Permalink, 'Text':Text, 'Text_raw':Text_raw,
                 'Slack_username':Slack_username, 'Team_ID':Team_ID, 'Team_Name':Team_Name, 'Is_Bot':Is_Bot}
 
+#Public-agent input
+first_name = ['Alexis','Alexis_2', 'Alexis_3', 'Alexis_4']
+last_name = ['Peña', 'Peña_2','Peña_3', 'Peña_4']
+agent_email = ['aleperixx@gmail.com', 'example@email.com', 'example2@email.com', 'example3@email.com']
+user_email = ['aleperixx@gmail.com', 'example@email.com', 'example2@email.com', 'example3@email.com']
+status = ['ACTIVE', 'INACTIVE', 'ACTIVE', 'ACTIVE']
+slug = ['public-support-fullstack', 'public-support-fullstack', 'public-support-fullstack', 'public-support-fullstack']
+
+dict_agents = {'first_name': first_name, 'last_name': last_name, 'agent_email': agent_email, 'user_email': user_email, 'status': status, 'slug': slug}
+
 
 # Expected inputs
-expected_inputs = pd.DataFrame.from_dict(dict_inputs)
+expected_inputs = [pd.DataFrame.from_dict(dict_inputs), pd.DataFrame.from_dict(dict_agents)]
 
 
 # Values for output
@@ -56,7 +66,7 @@ expected_output = pd.DataFrame.from_dict(dict_output)
 
 
 
-def run(df):
+def run(df, df2):
 
     """ This function creates and modifies some columns"""
 
@@ -68,7 +78,7 @@ def run(df):
     df['Is_a_question'] = np.where(df['Timestamp_Thread'].isnull(), 1, 0)
 
     # Create column to identify if it is an agent or not
-    support_agent_emails = ['aalejo@gmail.com', 'tgonzalez@4geeksacademy.com']
+    support_agent_emails = df2['agent_email']
     df['Is_agent'] = np.where(df['Email'].isin(support_agent_emails), 1, 0)
 
     # Encode the column to know if it is a message from a Bot
