@@ -74,7 +74,6 @@ def run(df):
  
     # Create new column to know the difference in seconds between answers from the same user
 
-    # df_answers['Datetime'] = pd.to_datetime(df_answers['Datetime'])
     df_answers['Datetime'] = pd.to_datetime(df_answers['Datetime'], utc=True)
     # The line above what added by CHARLY
     df_answers['Diff_in_seconds'] = (df_answers.sort_values('Datetime').groupby('User_ID').Datetime.diff())
