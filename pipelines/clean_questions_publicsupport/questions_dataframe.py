@@ -62,7 +62,7 @@ def run(df):
 
     questions = Q_df.groupby(['User_ID','Datetime'])[['Text']]
     df_questions = pd.DataFrame(questions.sum().reset_index())
-
+    df_questions['Datetime'] = pd.to_datetime(df_questions['Datetime'], utc=True)
     # Create new column to know the difference in seconds between questions from the same user
     df_questions['Diff_in_seconds'] = (df_questions.sort_values('Datetime').groupby('User_ID').Datetime.diff())
     df_questions['Diff_in_seconds'] = df_questions['Diff_in_seconds'].fillna(pd.Timedelta(seconds=0))
@@ -81,14 +81,13 @@ def run(df):
         return df_x
 
     # Apply function    
-    create_QuestionId(df_questions)
+    df_questions = create_QuestionId(df_questions)
 
     # Merge the dataframe to its previous columns and delete auxiliary columns
-    df_questions = df_questions.merge(Q_df, how = 'left', left_on = ['User_ID', 'Datetime', 'Text'],
-                    right_on = ['User_ID', 'Datetime', 'Text']).drop(['Diff_in_seconds','Diff_abs','Not_previous_author','Text_raw', 'Is_a_question'], axis=1)
+    df_questions = df_questions.merge(Q_df, how = 'left', left_index=True, right_index=True).drop(['Diff_in_seconds','Diff_abs','Not_previous_author','Text_raw', 'Is_a_question'], axis=1)
 
     # Merge text in rows that have the same Q_message_ID
-    df_questions['Text'] = df_questions.groupby(['Q_message_ID'])['Text'].transform(lambda x : ' '.join(x))
+    df_questions['Text'] = df_questions.groupby(['Q_message_ID'])['Text_x'].transform(lambda x : ' '.join(x))
 
     # Delete empty columns
     df_questions.dropna(axis=1, how='all', inplace=True)
