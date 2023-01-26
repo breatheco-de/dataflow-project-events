@@ -65,8 +65,6 @@ dict_output = {'Channel_Slug':Channel_Slug, 'Timestamp':Timestamp, 'Timestamp_Th
 # Expected outputs
 expected_output = pd.DataFrame.from_dict(dict_output)
 
-
-
 def run(df, df2):
 
     """ This function creates and modifies some columns"""
