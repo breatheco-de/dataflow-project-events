@@ -9,7 +9,7 @@ Timestamp = ['11/27/2022 2:53:19', '11/11/2022 17:14:26', '11/19/2022 19:35:47',
 Timestamp_Thread = ['11/26/2022 2:42:32', np.nan, np.nan, '12/2/2022 21:13:07']
 User_ID = ['U_ID_1', 'U_ID_2', 'U_ID_3', 'U_ID_4']
 Full_Name = ['Name_1', 'Bot', 'Name_3', 'Tomas Gonzalez']
-Email = ['Email_1@gmail.com', 'Bot@gmail.com', 'Email_3@gmail.com', 'tgonzalez@4geeksacademy.com']
+Email = ['Email_1@gmail.com', 'Bot@gmail.com', 'Email_3@gmail.com','aleperixx@gmail.com']
 Permalink = ['Permalink_1', 'Permalink_2', 'Permalink_3', 'Permalink_4']
 Text = ['Answer from User 1', 'Question from Bot', 'Question from User 3', 'Answer from tgonzalez']
 Text_raw = ['Answer from User 1', 'Question from Bot', 'Question from User 3', 'Answer from tgonzalez']
@@ -18,6 +18,17 @@ Team_ID = ['T0BFXMWMV', 'T0BFXMWMV', 'T0BFXMWMV', 'T0BFXMWMV']
 Team_Name = ['4Geeks Academy', '4Geeks Academy', '4Geeks Academy', '4Geeks Academy']
 Is_Bot = [False, True, False, False]
 
+
+#Public-agent input
+first_name = ['Alexis','Alexis_2', 'Alexis_3', 'Alexis_4']
+last_name = ['Peña', 'Peña_2','Peña_3', 'Peña_4']
+agent_email = ['example@email.com', 'example2@email.com', 'example3@email.com', 'aleperixx@gmail.com']
+user_email = ['example@email.com', 'example2@email.com', 'example3@email.com','aleperixx@gmail.com']
+status = ['ACTIVE', 'INACTIVE', 'ACTIVE', 'ACTIVE']
+slug = ['public-support-fullstack', 'public-support-fullstack', 'public-support-fullstack', 'public-support-fullstack']
+
+dict_agents = {'first_name': first_name, 'last_name': last_name, 'agent_email': agent_email, 'user_email': user_email, 'status': status, 'slug': slug}
+
 dict_inputs = {'Channel_ID': Channel_ID, 'Channel_Slug':Channel_Slug, 'Timestamp':Timestamp, 
                 'Timestamp_Thread':Timestamp_Thread, 'User_ID':User_ID, 'Full_Name':Full_Name,
                 'Email':Email, 'Permalink':Permalink, 'Text':Text, 'Text_raw':Text_raw,
@@ -25,7 +36,7 @@ dict_inputs = {'Channel_ID': Channel_ID, 'Channel_Slug':Channel_Slug, 'Timestamp
 
 
 # Expected inputs
-expected_inputs = pd.DataFrame.from_dict(dict_inputs)
+expected_inputs = [pd.DataFrame.from_dict(dict_inputs), pd.DataFrame.from_dict(dict_agents)]
 
 
 # Values for output
@@ -34,7 +45,7 @@ Timestamp = ['11/27/2022 2:53:19', '11/11/2022 17:14:26', '11/19/2022 19:35:47',
 Timestamp_Thread = ['11/26/2022 2:42:32', np.nan, np.nan, '12/2/2022 21:13:07']
 User_ID = ['U_ID_1', 'U_ID_2', 'U_ID_3', 'U_ID_4']
 Full_Name = ['Name_1', 'Bot', 'Name_3', 'Tomas Gonzalez']
-Email = ['Email_1@gmail.com', 'Bot@gmail.com', 'Email_3@gmail.com', 'tgonzalez@4geeksacademy.com']
+Email = ['Email_1@gmail.com', 'Bot@gmail.com', 'Email_3@gmail.com', 'aleperixx@gmail.com']
 Permalink = ['Permalink_1', 'Permalink_2', 'Permalink_3', 'Permalink_4']
 Text = ['Answer from User 1', 'Question from Bot', 'Question from User 3', 'Answer from tgonzalez']
 Text_raw = ['Answer from User 1', 'Question from Bot', 'Question from User 3', 'Answer from tgonzalez']
@@ -54,9 +65,7 @@ dict_output = {'Channel_Slug':Channel_Slug, 'Timestamp':Timestamp, 'Timestamp_Th
 # Expected outputs
 expected_output = pd.DataFrame.from_dict(dict_output)
 
-
-
-def run(df):
+def run(df, df2):
 
     """ This function creates and modifies some columns"""
 
@@ -68,7 +77,7 @@ def run(df):
     df['Is_a_question'] = np.where(df['Timestamp_Thread'].isnull(), 1, 0)
 
     # Create column to identify if it is an agent or not
-    support_agent_emails = ['aalejo@gmail.com', 'tgonzalez@4geeksacademy.com']
+    support_agent_emails = df2['agent_email']
     df['Is_agent'] = np.where(df['Email'].isin(support_agent_emails), 1, 0)
 
     # Encode the column to know if it is a message from a Bot
