@@ -41,7 +41,7 @@ Response_time = [pd.to_datetime('12/3/2022 4:10:34') - pd.to_datetime('12/3/2022
                 pd.to_datetime('11/13/2022 4:30:45') - pd.to_datetime('11/12/2022 19:30:23'),
                 pd.to_datetime('11/13/2022 2:10:15') - pd.to_datetime('11/12/2022 19:30:23')]
 
-dict_answers = {'A_User_ID':A_User_ID, 'A_Datetime':A_Datetime, 'A_Text':A_Text, 'A_message_ID':A_message_ID,
+dict_answers = {'Unnamed: 0_x':[1, 2, 3], 'Unnamed: 0_y':[1, 2, 3], 'A_User_ID':A_User_ID, 'A_Datetime':A_Datetime, 'A_Text':A_Text, 'A_message_ID':A_message_ID,
                 'Channel_Slug':Channel_Slug, 'A_Timestamp':A_Timestamp, 'Key_to_Q_Timestamp':Key_to_Q_Timestamp,
                 'A_Full_Name':A_Full_Name, 'A_Email':A_Email, 'A_Permalink':A_Permalink, 'A_Slack_username':A_Slack_username,
                 'A_from_Bot':A_from_Bot, 'A_from_Agent':A_from_Agent, 'A_Datetime_Thread':A_Datetime_Thread,
@@ -114,5 +114,6 @@ def run(df_questions, df_answers):
     df_answers['Key_to_Q_Timestamp'] =  np.where(df_answers['Key_to_Q_Timestamp'].isnull(), str(df_answers['A_Datetime_Thread']), df_answers['Key_to_Q_Timestamp'])
 
     final_df = pd.merge(df_questions, df_answers, left_on = ['Q_Timestamp', 'Channel_Slug'], right_on = ['Key_to_Q_Timestamp', 'Channel_Slug'], how = 'left')
+    final_df = final_df.drop(['Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
     
     return final_df

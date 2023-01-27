@@ -19,7 +19,7 @@ Is_agent = [0, 0, 0, 0, 0, 0, 0, 0]
 Datetime = [pd.to_datetime('11/26/2022 2:50:20'), pd.to_datetime('11/13/2022 17:14:20'), pd.to_datetime('11/26/2022 2:53:40'), pd.to_datetime('11/13/2022 17:27:30'), pd.to_datetime('11/13/2022 17:30:20'), pd.to_datetime('11/19/2022 19:35:59'), pd.to_datetime('11/19/2022 19:37:20'), pd.to_datetime('12/3/2022 2:55:06')]
 Datetime_Thread = [pd.to_datetime('11/26/2022 2:42:32'), pd.to_datetime('11/13/2022 16:42:32'), pd.to_datetime('11/26/2022 2:52:20'), pd.to_datetime('11/13/2022 16:42:32'), pd.to_datetime('11/13/2022 16:42:32'), pd.to_datetime('11/19/2022 19:20:00'), pd.to_datetime('11/19/2022 19:20:00'), pd.to_datetime(np.nan)]
 
-dict_inputs = {'Channel_Slug':Channel_Slug, 'Timestamp':Timestamp, 'Timestamp_Thread':Timestamp_Thread,
+dict_inputs = {'Unnamed: 0':[1, 2, 3, 4, 5, 6, 7, 8], 'Channel_Slug':Channel_Slug, 'Timestamp':Timestamp, 'Timestamp_Thread':Timestamp_Thread,
                 'User_ID':User_ID, 'Full_Name':Full_Name, 'Email':Email, 'Permalink':Permalink, 'Text':Text,
                 'Text_raw':Text_raw, 'Slack_username':Slack_username, 'Is_Bot':Is_Bot, 'Is_a_question':Is_a_question,
                 'Is_agent':Is_agent, 'Datetime':Datetime, 'Datetime_Thread':Datetime_Thread}
@@ -72,6 +72,11 @@ def run(df):
     answers = A_df.groupby(['User_ID','Datetime', 'Datetime_Thread'])[['Text']]
     df_answers = pd.DataFrame(answers.sum().reset_index())
 
+    df_answers.loc[:, 'Datetime'] = pd.to_datetime(df_answers['Datetime'])
+    df_answers.loc[:, 'Datetime_Thread'] = pd.to_datetime(df_answers['Datetime_Thread'])
+    A_df.loc[:, 'Datetime'] = pd.to_datetime(A_df['Datetime'])
+    A_df.loc[:, 'Datetime_Thread'] = pd.to_datetime(A_df['Datetime_Thread'])
+
     # Create new column to know the difference in seconds between answers from the same user
     df_answers['Diff_in_seconds'] = (df_answers.sort_values('Datetime').groupby('User_ID').Datetime.diff())
     df_answers['Diff_in_seconds'] = df_answers['Diff_in_seconds'].fillna(pd.Timedelta(seconds=0))
@@ -101,7 +106,7 @@ def run(df):
     # Merge the dataframe to its previous columns and delete auxiliary columns
     df_answers = df_answers.merge(A_df, how = 'left', left_on = ['User_ID', 'Datetime', 'Datetime_Thread', 'Text'],
                 right_on = ['User_ID', 'Datetime', 'Datetime_Thread', 'Text']).drop(['Diff_in_seconds', 
-                'Diff_abs', 'Not_previous_author', 'Diff_Thread', 'Text_raw', 'Is_a_question'], axis=1)
+                'Diff_abs', 'Not_previous_author', 'Diff_Thread', 'Text_raw', 'Is_a_question', 'Unnamed: 0'], axis=1)
 
     # Calculate the response time
     df_answers['Response_time'] = df_answers['Datetime'] - df_answers['Datetime_Thread']

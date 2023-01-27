@@ -18,7 +18,7 @@ Is_agent = [0, 0, 0, 1, 0, 0, 1]
 Datetime = [pd.to_datetime('11/27/2022 2:53:19'), pd.to_datetime('11/11/2022 17:14:26'), pd.to_datetime('11/19/2022 19:35:47'), pd.to_datetime('12/3/2022 2:40:06'), pd.to_datetime('11/19/2022 19:33:47'), pd.to_datetime('11/19/2022 19:35:59'), pd.to_datetime('12/3/2022 2:50:06')]
 Datetime_Thread = [pd.to_datetime('11/26/2022 2:42:32'), pd.to_datetime(np.nan), pd.to_datetime(np.nan), pd.to_datetime(np.nan), pd.to_datetime(np.nan), pd.to_datetime(np.nan), pd.to_datetime(np.nan)]
 
-dict_inputs = {'Channel_Slug':Channel_Slug, 'Timestamp':Timestamp, 'Timestamp_Thread':Timestamp_Thread, 
+dict_inputs = {'Unnamed: 0':[1, 2, 3, 4, 5, 6, 7], 'Channel_Slug':Channel_Slug, 'Timestamp':Timestamp, 'Timestamp_Thread':Timestamp_Thread, 
                 'User_ID':User_ID, 'Full_Name':Full_Name, 'Email':Email, 'Permalink':Permalink, 'Text':Text, 
                 'Text_raw':Text_raw, 'Slack_username':Slack_username, 'Is_Bot':Is_Bot, 'Is_a_question':Is_a_question,
                 'Is_agent':Is_agent, 'Datetime':Datetime, 'Datetime_Thread':Datetime_Thread}
@@ -63,6 +63,9 @@ def run(df):
     questions = Q_df.groupby(['User_ID','Datetime'])[['Text']]
     df_questions = pd.DataFrame(questions.sum().reset_index())
 
+    df_questions.loc[:, 'Datetime'] = pd.to_datetime(df_questions['Datetime'])
+    Q_df.loc[:, 'Datetime'] = pd.to_datetime(Q_df['Datetime'])
+
     # Create new column to know the difference in seconds between questions from the same user
     df_questions['Diff_in_seconds'] = (df_questions.sort_values('Datetime').groupby('User_ID').Datetime.diff())
     df_questions['Diff_in_seconds'] = df_questions['Diff_in_seconds'].fillna(pd.Timedelta(seconds=0))
@@ -85,7 +88,7 @@ def run(df):
 
     # Merge the dataframe to its previous columns and delete auxiliary columns
     df_questions = df_questions.merge(Q_df, how = 'left', left_on = ['User_ID', 'Datetime', 'Text'],
-                    right_on = ['User_ID', 'Datetime', 'Text']).drop(['Diff_in_seconds','Diff_abs','Not_previous_author','Text_raw', 'Is_a_question'], axis=1)
+                    right_on = ['User_ID', 'Datetime', 'Text']).drop(['Diff_in_seconds','Diff_abs','Not_previous_author','Text_raw', 'Is_a_question', 'Unnamed: 0'], axis=1)
 
     # Merge text in rows that have the same Q_message_ID
     df_questions['Text'] = df_questions.groupby(['Q_message_ID'])['Text'].transform(lambda x : ' '.join(x))
