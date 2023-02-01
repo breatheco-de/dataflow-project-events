@@ -106,7 +106,7 @@ def run(df):
     # Merge the dataframe to its previous columns and delete auxiliary columns
     df_answers = df_answers.merge(A_df, how = 'left', left_on = ['User_ID', 'Datetime', 'Datetime_Thread', 'Text'],
                 right_on = ['User_ID', 'Datetime', 'Datetime_Thread', 'Text']).drop(['Diff_in_seconds', 
-                'Diff_abs', 'Not_previous_author', 'Diff_Thread', 'Text_raw', 'Is_a_question', 'Unnamed: 0'], axis=1)
+                'Diff_abs', 'Not_previous_author', 'Diff_Thread', 'Text_raw', 'Is_a_question'], axis=1)
 
     # Calculate the response time
     df_answers['Response_time'] = df_answers['Datetime'] - df_answers['Datetime_Thread']
