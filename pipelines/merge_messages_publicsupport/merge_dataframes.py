@@ -114,6 +114,6 @@ def run(df_questions, df_answers):
     df_answers['Key_to_Q_Timestamp'] =  np.where(df_answers['Key_to_Q_Timestamp'].isnull(), str(df_answers['A_Datetime_Thread']), df_answers['Key_to_Q_Timestamp'])
 
     final_df = pd.merge(df_questions, df_answers, left_on = ['Q_Timestamp', 'Channel_Slug'], right_on = ['Key_to_Q_Timestamp', 'Channel_Slug'], how = 'left')
-    final_df = final_df.drop(['Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
+    # final_df = final_df.drop(['Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
     
     return final_df
