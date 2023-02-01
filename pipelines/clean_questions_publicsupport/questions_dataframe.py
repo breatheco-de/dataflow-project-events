@@ -88,7 +88,7 @@ def run(df):
 
     # Merge the dataframe to its previous columns and delete auxiliary columns
     df_questions = df_questions.merge(Q_df, how = 'left', left_on = ['User_ID', 'Datetime', 'Text'],
-                    right_on = ['User_ID', 'Datetime', 'Text']).drop(['Diff_in_seconds','Diff_abs','Not_previous_author','Text_raw', 'Is_a_question', 'Unnamed: 0'], axis=1)
+                    right_on = ['User_ID', 'Datetime', 'Text']).drop(['Diff_in_seconds','Diff_abs','Not_previous_author','Text_raw', 'Is_a_question'], axis=1)
 
     # Merge text in rows that have the same Q_message_ID
     df_questions['Text'] = df_questions.groupby(['Q_message_ID'])['Text'].transform(lambda x : ' '.join(x))
