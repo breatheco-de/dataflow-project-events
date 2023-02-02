@@ -115,5 +115,6 @@ def run(df_questions, df_answers):
 
     final_df = pd.merge(df_questions, df_answers, left_on = ['Q_Timestamp', 'Channel_Slug'], right_on = ['Key_to_Q_Timestamp', 'Channel_Slug'], how = 'left')
     # final_df = final_df.drop(['Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
-    
+    final_df['Response_time_minutes'] = pd.to_timedelta(final_df['Response_time'])
+    final_df['Response_time_minutes'] = final_df['Response_time_minutes']/np.timedelta64(1, 'm')
     return final_df
