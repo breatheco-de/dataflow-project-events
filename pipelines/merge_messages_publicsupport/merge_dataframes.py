@@ -41,7 +41,7 @@ Response_time = [pd.to_datetime('12/3/2022 4:10:34') - pd.to_datetime('12/3/2022
                 pd.to_datetime('11/13/2022 4:30:45') - pd.to_datetime('11/12/2022 19:30:23'),
                 pd.to_datetime('11/13/2022 2:10:15') - pd.to_datetime('11/12/2022 19:30:23')]
 
-dict_answers = {'Unnamed: 0_x':[1, 2, 3], 'Unnamed: 0_y':[1, 2, 3], 'A_User_ID':A_User_ID, 'A_Datetime':A_Datetime, 'A_Text':A_Text, 'A_message_ID':A_message_ID,
+dict_answers = {'A_User_ID':A_User_ID, 'A_Datetime':A_Datetime, 'A_Text':A_Text, 'A_message_ID':A_message_ID,
                 'Channel_Slug':Channel_Slug, 'A_Timestamp':A_Timestamp, 'Key_to_Q_Timestamp':Key_to_Q_Timestamp,
                 'A_Full_Name':A_Full_Name, 'A_Email':A_Email, 'A_Permalink':A_Permalink, 'A_Slack_username':A_Slack_username,
                 'A_from_Bot':A_from_Bot, 'A_from_Agent':A_from_Agent, 'A_Datetime_Thread':A_Datetime_Thread,
@@ -82,6 +82,9 @@ Response_time = [pd.to_datetime(np.nan),
                 pd.to_datetime('11/13/2022 4:30:45') - pd.to_datetime('11/12/2022 19:30:23'),
                 pd.to_datetime('11/13/2022 2:10:15') - pd.to_datetime('11/12/2022 19:30:23'),
                 pd.to_datetime('12/3/2022 4:10:34') - pd.to_datetime('12/3/2022 2:45:06')]
+Response_time_minutes = [x/np.timedelta64(1, 'm') for x in Response_time]
+Min_response_time_by_user = Response_time_minutes.copy()
+
 
 dict_output = {'Q_User_ID':Q_User_ID, 'Q_Datetime':Q_Datetime, 'Q_Text':Q_Text, 'Q_message_ID':Q_message_ID, 'Channel_Slug':Channel_Slug,
                 'Q_Timestamp':Q_Timestamp, 'Q_Full_Name':Q_Full_Name, 'Q_Email':Q_Email, 'Q_Permalink':Q_Permalink,
@@ -89,7 +92,7 @@ dict_output = {'Q_User_ID':Q_User_ID, 'Q_Datetime':Q_Datetime, 'Q_Text':Q_Text, 
                 'A_User_ID':A_User_ID, 'A_Datetime':A_Datetime, 'A_Text':A_Text, 'A_message_ID':A_message_ID,
                 'A_Timestamp':A_Timestamp, 'Key_to_Q_Timestamp':Key_to_Q_Timestamp, 'A_Full_Name':A_Full_Name, 'A_Email':A_Email, 
                 'A_Permalink':A_Permalink, 'A_Slack_username':A_Slack_username, 'A_from_Bot':A_from_Bot, 'A_from_Agent':A_from_Agent, 
-                'A_Datetime_Thread':A_Datetime_Thread, 'Response_time':Response_time}
+                'A_Datetime_Thread':A_Datetime_Thread, 'Response_time':Response_time, 'Response_time_minutes':Response_time_minutes, 'Min_response_time_by_user':Min_response_time_by_user}
 
 # Expected output
 expected_output = pd.DataFrame(dict_output)
@@ -117,4 +120,9 @@ def run(df_questions, df_answers):
     # final_df = final_df.drop(['Unnamed: 0_x', 'Unnamed: 0_y'], axis=1)
     final_df['Response_time_minutes'] = pd.to_timedelta(final_df['Response_time'])
     final_df['Response_time_minutes'] = final_df['Response_time_minutes']/np.timedelta64(1, 'm')
+
+    final_df['Min_RT'] = final_df.groupby(['Q_message_ID', 'A_User_ID'])['Response_time_minutes'].transform('min')
+    final_df['Min_response_time_by_user'] = np.where(final_df['Response_time_minutes'] == final_df['Min_RT'], final_df['Response_time_minutes'], np.nan)
+    final_df = final_df.drop(['Min_RT'], axis=1)
+
     return final_df

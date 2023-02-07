@@ -19,7 +19,7 @@ Is_agent = [0, 0, 0, 0, 0, 0, 0, 0]
 Datetime = [pd.to_datetime('11/26/2022 2:50:20'), pd.to_datetime('11/13/2022 17:14:20'), pd.to_datetime('11/26/2022 2:53:40'), pd.to_datetime('11/13/2022 17:27:30'), pd.to_datetime('11/13/2022 17:30:20'), pd.to_datetime('11/19/2022 19:35:59'), pd.to_datetime('11/19/2022 19:37:20'), pd.to_datetime('12/3/2022 2:55:06')]
 Datetime_Thread = [pd.to_datetime('11/26/2022 2:42:32'), pd.to_datetime('11/13/2022 16:42:32'), pd.to_datetime('11/26/2022 2:52:20'), pd.to_datetime('11/13/2022 16:42:32'), pd.to_datetime('11/13/2022 16:42:32'), pd.to_datetime('11/19/2022 19:20:00'), pd.to_datetime('11/19/2022 19:20:00'), pd.to_datetime(np.nan)]
 
-dict_inputs = {'Unnamed: 0':[1, 2, 3, 4, 5, 6, 7, 8], 'Channel_Slug':Channel_Slug, 'Timestamp':Timestamp, 'Timestamp_Thread':Timestamp_Thread,
+dict_inputs = {'Channel_Slug':Channel_Slug, 'Timestamp':Timestamp, 'Timestamp_Thread':Timestamp_Thread,
                 'User_ID':User_ID, 'Full_Name':Full_Name, 'Email':Email, 'Permalink':Permalink, 'Text':Text,
                 'Text_raw':Text_raw, 'Slack_username':Slack_username, 'Is_Bot':Is_Bot, 'Is_a_question':Is_a_question,
                 'Is_agent':Is_agent, 'Datetime':Datetime, 'Datetime_Thread':Datetime_Thread}
