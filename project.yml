@@ -1,8 +1,25 @@
 name: "Public Support Collection"
 pipelines:
-  - slug: "clean_questions_publicsupport"
+  - slug: "add_slug_to_cohort_users_publicsupport"
+    sources:
+      - cohort-users
+      - cohorts
+    destination: cohort-users-with-slug
+    transformations:
+      - add_slug_to_cohort_users
+
+  - slug: "add_slug_to_slack_messages_publicsupport"
     sources:
       - slack_support_channels
+      - auth-user
+      - cohort-users-with-slug
+    destination: slack-support-channels-with-slug
+    transformations:
+      - add_slug_to_slack_messages
+
+  - slug: "clean_questions_publicsupport"
+    sources:
+      - slack-support-channels-with-slug
       - public-support-agents
     destination: cleaned-questions-publicsupport
     transformations: 
@@ -11,7 +28,7 @@ pipelines:
   
   - slug: "clean_answers_publicsupport"
     sources:
-      - slack_support_channels
+      - slack-support-channels-with-slug
       - public-support-agents
     destination: cleaned-answers-publicsupport
     transformations:
@@ -20,8 +37,8 @@ pipelines:
 
   - slug: "merge_messages_publicsupport"
     sources:
-      - cleaned-questions-publicsupport  # Output from clean_questions_publicsupport
-      - cleaned-answers-publicsupport   #Output from clean_answers_publicsupport
+      - cleaned-questions-publicsupport  
+      - cleaned-answers-publicsupport   
     destination: cleaned-support-channels
     transformations:
       - merge_dataframes
