@@ -58,7 +58,7 @@ expected_inputs = [pd.DataFrame(dict_cohort_users), pd.DataFrame(dict_cohorts)]
 
 ##### Values for output #####
 user_id = [111, 222, 444, 555]
-slug = ['cohort-1, cohort-2', 'cohort-2', np.nan, np.nan]
+slug = ['cohort-1, cohort-2', 'cohort-2', 'not actively studying', 'not actively studying']
 
 dict_output = {'user_id':user_id, 'slug':slug}
 
@@ -106,5 +106,8 @@ def run(cohort_users, cohorts):
 
     # Remove duplicates, so there is a single row per user_id, containing all slugs associated with each user_id
     cohort_users_with_slug = cohort_users_with_slug.drop_duplicates()
+    
+    # Replace value for those without slug
+    cohort_users_with_slug['slug'] = cohort_users_with_slug['slug'].fillna('not actively studying')
 
     return cohort_users_with_slug
