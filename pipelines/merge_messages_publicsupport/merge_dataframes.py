@@ -108,7 +108,7 @@ def run(df_questions, df_answers):
 
     def autocompletion_merged_timestamps(Key_to_Q):
         for timestamp in questions_timestamps:
-            if Key_to_Q in str(timestamp):
+            if str(Key_to_Q) in str(timestamp):
                 return timestamp
     
         return None
