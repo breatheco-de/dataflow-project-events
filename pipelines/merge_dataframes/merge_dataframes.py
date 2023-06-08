@@ -36,4 +36,17 @@ def run(df,df2):
 
     print('Shape of merged_df', merged_df.shape)
 
+    merged_df['starting_at'] = pd.to_datetime(merged_df['starting_at'])
+    merged_df = merged_df.sort_values(['email', 'starting_at'])
+
+    # Get first events for each email
+    first_events = merged_df.groupby('email').first().reset_index()
+
+
+    # Count new persons registered per event
+    new_persons = first_events['event_id'].value_counts().reset_index()
+    new_persons.columns = ['event_id', 'New persons registered']
+
+    # Merge new_persons column into original dataframe
+    merged_df = merged_df.merge(new_persons, on='event_id', how='left')
     return merged_df
