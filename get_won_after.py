@@ -1,27 +1,6 @@
 import pandas as pd
-import numpy as np
-from datetime import datetime
-
-expected_inputs = [pd.DataFrame({
-    'email': ['aa','bb','cc'],
-    'event_id': ['1','2','2']
-}),
-
-pd.DataFrame({
-    'id': ['1', '2'],
-    'title': ['aa','bb'],
-    'excerpt':['aa','bb'],
-    'eventbrite_sync_description':['aa','bb'],
-    'eventbrite_url':['aa','bb'],
-    'eventbrite_id':['aa','bb'],
-    'banner':['aa','bb']
-})]
-
-expected_output = pd.DataFrame({
-    'email': ['aa','bb','cc'],
-    'event_id': ['1','2','2'],
-    'title': ['aa','bb','bb']
-})
+import random
+from datetime import datetime, timedelta
 
 
 def run(df,df2, df3):
@@ -31,8 +10,7 @@ def run(df,df2, df3):
     # print('Shape of df before merge', df.shape)
     # print('Shape of df2 before merge', df2.shape)
 
-    merged_df = pd.merge(df, df2, left_on="event_id", right_on="id").drop(['id','excerpt',
-                        'eventbrite_sync_description','eventbrite_url','eventbrite_id','banner'], axis=1)
+    merged_df = pd.merge(df, df2, left_on="event_id", right_on="id").drop(['id'], axis=1)
 
 
     merged_df['starting_at'] = pd.to_datetime(merged_df['starting_at'])
@@ -80,3 +58,37 @@ def run(df,df2, df3):
 
     return merged_df
         
+# Create mock data for df
+df_data = {
+    'event_id': [1, 2, 2, 3, 3, 3, 4, 4, 4, 4],
+    'email': ['john@example.com', 'mary@example.com', 'john@example.com', 'adam@example.com', 'mary@example.com',
+              'adam@example.com', 'john@example.com', 'adam@example.com', 'mary@example.com', 'adam@example.com'],
+    'starting_at': [datetime(2023, 1, 1), datetime(2023, 1, 2), datetime(2023, 1, 3), datetime(2023, 1, 4),
+                     datetime(2023, 1, 5), datetime(2023, 1, 6), datetime(2023, 1, 7), datetime(2023, 1, 8),
+                     datetime(2023, 1, 9), datetime(2023, 1, 10)],
+    'attended_at': [datetime(2023, 1, 3), datetime(2023, 1, 4), datetime(2023, 1, 4), datetime(2023, 1, 6),
+                    datetime(2023, 1, 6), datetime(2023, 1, 6), datetime(2023, 1, 9), datetime(2023, 1, 9),
+                    datetime(2023, 1, 9), datetime(2023, 1, 9)]
+}
+
+df = pd.DataFrame(df_data)
+
+# Create mock data for df2
+df2_data = {
+    'id': [1, 2, 3, 4],
+    'location': ['New York', 'San Francisco', 'Chicago', 'Los Angeles']
+}
+
+df2 = pd.DataFrame(df2_data)
+
+# Create mock data for df3
+df3_data = {
+    'email': ['john@example.com', 'mary@example.com', 'adam@example.com'],
+    'ac_deal_id': [None, 2, 3],
+    'created_at': [datetime(2023, 1, 2), datetime(2023, 1, 3), datetime(2023, 1, 5)]
+}
+
+df3 = pd.DataFrame(df3_data)
+
+# Call the run function with the mock data
+result = run(df, df2, df3)

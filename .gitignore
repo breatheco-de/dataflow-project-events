@@ -9,3 +9,10 @@ output/*
 
 # exception to the rule
 !output/.gitkeep 
+
+venv
+
+requirements.txt
+
+Pipfile
+
