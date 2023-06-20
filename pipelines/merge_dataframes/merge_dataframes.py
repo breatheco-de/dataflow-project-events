@@ -76,7 +76,16 @@ def run(df,df2, df3):
                 merged_df.at[index, 'won_after_even'] = True
 
     won_after_event_counts = merged_df[merged_df['won_after_even']].groupby('event_id').size()
-    print(won_after_event_counts)
+    # Convert 'won_after_event' to int for proper summation
+    merged_df['won_after_even'] = merged_df['won_after_even'].astype(int)
 
+    summary_df = merged_df.groupby('event_id').agg({'won_after_even': 'sum'}).reset_index()
+    
+    summary_df = merged_df.groupby('event_id').agg({
+    'won_after_even': 'sum',
+    'New persons registered': 'first'  # assuming 'New persons registered' is same for all rows of an 'event_id'
+    }).reset_index()
+
+    print(summary_df['event_id'].duplicated().any())
     return merged_df
         
