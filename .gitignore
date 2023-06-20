@@ -7,5 +7,9 @@ sources/*
 # exclude everything
 output/*
 
+__pycache__
+
+venv
+
 # exception to the rule
 !output/.gitkeep 
