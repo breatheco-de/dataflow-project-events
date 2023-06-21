@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-
 expected_inputs = [pd.DataFrame({
     'email': ['aa','bb','cc'],
     'event_id': ['1','2','2']
@@ -38,5 +37,3 @@ def run(df,df2):
     print('Shape of merged_df', merged_df.shape)
 
     return merged_df
-
-
