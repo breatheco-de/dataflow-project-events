@@ -32,3 +32,11 @@ pipelines:
     transformations:
       - create_tags_df
 
+  - slug: "first_events_and_form_entries_dataframe"
+    sources:
+      - bigquery-event-and-checkins
+      - bigquery-form-entry
+    destination: bigquery-tags
+    transformations:
+      - append_new_columns
+
