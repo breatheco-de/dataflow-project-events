@@ -6,6 +6,9 @@ import pandas
 import inspect
 from colorama import Fore, Back, Style
 from utils.core import load_pipelines_from_project, get_params, load_pipelines_from_project, get_transformation
+import psutil
+
+initial_memory = psutil.Process().memory_info().rss
 
 pipeline, sources = get_params()
 if pipeline is None:
@@ -36,6 +39,8 @@ for source in sources:
 
 df_out = None
 count = 0
+
+
 for t in pipeline['transformations']:
     count += 1
     print(Fore.WHITE +
@@ -50,3 +55,13 @@ for t in pipeline['transformations']:
 file_name = source.split('.')[0]
 df_out.to_csv(
     f"output/{pipeline['slug']}{str(round(time.time()))}.csv")
+
+
+final_memory = psutil.Process().memory_info().rss
+
+# Calculate the memory usage difference
+memory_usage = final_memory - initial_memory
+
+print(f"Memory usage: {memory_usage} bytes")
+print(f"Memory usage: {memory_usage / 1024} kilobytes")
+print(f"Memory usage: {memory_usage / (1024 * 1024)} megabytes")

@@ -9,3 +9,7 @@ output/*
 
 # exception to the rule
 !output/.gitkeep 
+
+venv
+
+__pycache__
