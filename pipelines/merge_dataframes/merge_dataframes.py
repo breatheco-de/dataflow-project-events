@@ -23,50 +23,34 @@ expected_output = pd.DataFrame({
     'title': ['aa','bb','bb']
 })
 
-
-def run(df, df2, df3):
+def run(df, df2):
     """
     This function takes care of merging both datasets, events and attendees.
     """
     print('Shape of df before merge', df.shape)
     print('Shape of df2 before merge', df2.shape)
 
-    # Merge dataframes
-    merged_df = pd.merge(df, df2, left_on="event_id", right_on="id").drop(['id', 'excerpt',
-                                                                          'eventbrite_sync_description', 'eventbrite_url',
-                                                                          'eventbrite_id', 'banner'], axis=1)
+    merged_df = pd.merge(df, df2, left_on="event_id", right_on="id").drop(['id','excerpt',
+                        'eventbrite_sync_description','eventbrite_url','eventbrite_id','banner'], axis=1)
+
     print('Shape of merged_df', merged_df.shape)
+    
+    # Making sure that 'starting_at', 'attended_at' and 'form_created_at' are datetime fields
+    # Localizing to UTC if the object is timezone naive, otherwise converting to UTC timezone
+    for field in ['starting_at', 'attended_at', 'form_created_at']:
+        merged_df[field] = pd.to_datetime(merged_df[field])
+        merged_df[field] = merged_df[field].dt.tz_localize('UTC', ambiguous='infer') if merged_df[field].dt.tz is None else merged_df[field].dt.tz_convert('UTC')
+    
+    # Sorting the dataframe by 'starting_at' column
+    merged_df = merged_df.sort_values('starting_at')
 
-    # Convert to datetime once
-    merged_df['starting_at'] = pd.to_datetime(merged_df['starting_at']).dt.tz_localize(None)
-    merged_df['attended_at'] = pd.to_datetime(merged_df['attended_at']).dt.tz_localize(None)
+    # Adding 'is_new_registree' column
+    merged_df['is_new_registree'] = ~merged_df.duplicated('email')
 
-    # Sort values
-    merged_df = merged_df.sort_values(['email', 'starting_at'])
-
-    # Identify new registrations
-    first_events = merged_df.groupby('email').first().reset_index()
-    first_events['is_new_register'] = True
-    merged_df = merged_df.merge(first_events[['email', 'is_new_register']], on='email', how='left')
-    merged_df['is_new_register'] = merged_df['is_new_register'].fillna(False)
-
-    # Prepare df3
-    df3 = df3.dropna(subset=['ac_deal_id'])
-    df3['created_at'] = pd.to_datetime(df3['created_at']).dt.tz_localize(None)
-
-    # Create dictionary for faster access
-    first_created_dates_dict = df3.groupby('email')['created_at'].min().to_dict()
-
-    # Calculate 'won_after_even' using vectorized operations
-    attended_emails = merged_df['email']
-    attended_at_dates = merged_df['attended_at']
-    form_entry_dates = attended_emails.map(first_created_dates_dict)
-
-    # Ensure that NaT values are handled correctly
-    valid_dates_mask = attended_at_dates.notna() & form_entry_dates.notna()
-    time_difference = (form_entry_dates - attended_at_dates).dt.days
-
-    # Create 'won_after_even' column
-    merged_df['won_after_even'] = (valid_dates_mask & (time_difference <= 15)).astype(int)
+    # Adding 'won_after_event' column
+    merged_df['won_after_event'] = (
+        (merged_df['form_ac_deal_id'].notna()) &
+        ((merged_df['form_created_at'] - merged_df['attended_at']).dt.days <= 15)
+    )
 
     return merged_df

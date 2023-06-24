@@ -2,7 +2,7 @@ name: "Events Collection"
 pipelines:
   - slug: "clean_registrees"
     sources:
-      - heroku-checkins   
+      - registrees_with_form_entries   
     destination: cleaned-event-registries
     transformations: 
       - drop_useless_columns
@@ -20,7 +20,6 @@ pipelines:
     sources:
       - cleaned-event-registries
       - cleaned-heroku-events
-      - bigquery-form-entry
     destination: bigquery-event-and-checkins
     transformations:
       - merge_dataframes
