@@ -1,3 +1,13 @@
+# For further developers or Data Scientist
+
+1. Is better if you work in Gitpod, its easily
+2. Run
+```
+pipenv install
+```
+You will need to install the dependencies of the Pipfile.lock to make this project work.
+
+
 # How use this project
 
 1. Clone into your computer (or gitpod).
