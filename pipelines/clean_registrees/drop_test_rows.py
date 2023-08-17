@@ -29,6 +29,7 @@ def run(df):
     # Drop testing rows
     df = df[df["email"].str.contains("@4geeks") == False]
     df = df[df["email"].str.contains("@stcsolutions") == False]
+    df = df[df["email"].str.contains("aalejo@gmail") == False]
 
 
     print('Shape after dropping test rows', df.shape)
