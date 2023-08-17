@@ -53,4 +53,6 @@ def run(df, df2):
         ((merged_df['form_created_at'] - merged_df['attended_at']).dt.days <= 15)
     )
 
+    merged_df['won_at'] = merged_df['won_at'].apply(pd.to_datetime)
+
     return merged_df
