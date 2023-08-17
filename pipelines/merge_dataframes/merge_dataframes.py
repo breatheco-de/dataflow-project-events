@@ -50,7 +50,8 @@ def run(df, df2):
     # Adding 'won_after_event' column
     merged_df['lead_after_event'] = (
         (merged_df['form_ac_deal_id'].notna()) &
-        ((merged_df['form_created_at'] - merged_df['attended_at']).dt.days <= 15)
+        ((merged_df['form_created_at'] - merged_df['attended_at']).dt.days <= 15) &
+        (merged_df['starting_at'] < merged_df['form_created_at'])
     )
 
     merged_df['won_at'] = merged_df['won_at'].apply(pd.to_datetime)
