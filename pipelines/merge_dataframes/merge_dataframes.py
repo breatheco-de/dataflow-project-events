@@ -48,7 +48,7 @@ def run(df, df2):
     merged_df['is_new_registree'] = ~merged_df.duplicated('email')
 
     # Adding 'won_after_event' column
-    merged_df['won_after_event'] = (
+    merged_df['lead_after_event'] = (
         (merged_df['form_ac_deal_id'].notna()) &
         ((merged_df['form_created_at'] - merged_df['attended_at']).dt.days <= 15)
     )
