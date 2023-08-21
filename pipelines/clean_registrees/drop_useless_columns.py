@@ -30,7 +30,7 @@ def run(df):
 
     print('Shape before dropping columns', df.shape)
 
-    TO_DROP_REGISTERED = ['id', 'created_at','updated_at','status']
+    TO_DROP_REGISTERED = ['id','updated_at','status']
 
     #Drop useless columns in registered_in_events
     df.drop(TO_DROP_REGISTERED, axis=1, inplace=True)
