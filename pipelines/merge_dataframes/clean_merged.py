@@ -44,7 +44,6 @@ def run(df):
     df['ending_at'] = df['ending_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
     # df['form_created_at'] = df['form_created_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
     # df['attended_at'] = df['attended_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
-    df['ending_at'] = df['ending_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
     df['published_at'] = df['published_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
 
     #Format change also changed the type to object, so we need to convert it to datetime again 
