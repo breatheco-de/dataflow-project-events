@@ -37,7 +37,7 @@ def run(df, df2):
     
     # Making sure that 'starting_at', 'attended_at' and 'form_created_at' are datetime fields
     # Localizing to UTC if the object is timezone naive, otherwise converting to UTC timezone
-    for field in ['created_at', 'starting_at', 'attended_at', 'form_created_at']:
+    for field in ['starting_at', 'attended_at', 'form_created_at']:
         merged_df[field] = pd.to_datetime(merged_df[field])
         merged_df[field] = merged_df[field].dt.tz_localize('UTC', ambiguous='infer') if merged_df[field].dt.tz is None else merged_df[field].dt.tz_convert('UTC')
     
