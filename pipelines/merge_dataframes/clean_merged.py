@@ -40,12 +40,12 @@ def run(df):
     df['attended_at'] = df['attended_at'].apply(pd.to_datetime)
 
     #Changing format
-    df['starting_at'] = df['starting_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
-    df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
-    df['ending_at'] = df['ending_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
-    df['form_created_at'] = df['form_created_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
-    df['attended_at'] = df['attended_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
-    df['published_at'] = df['published_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    df['starting_at'] = df['starting_at'].dt.strftime('%Y-%m-%d %H:%M')
+    df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M')
+    df['ending_at'] = df['ending_at'].dt.strftime('%Y-%m-%d %H:%M')
+    df['form_created_at'] = df['form_created_at'].dt.strftime('%Y-%m-%d %H:%M')
+    df['attended_at'] = df['attended_at'].dt.strftime('%Y-%m-%d %H:%M')
+    df['published_at'] = df['published_at'].dt.strftime('%Y-%m-%d %H:%M')
 
     #Format change also changed the type to object, so we need to convert it to datetime again 
     df['starting_at'] = df['starting_at'].apply(pd.to_datetime)
