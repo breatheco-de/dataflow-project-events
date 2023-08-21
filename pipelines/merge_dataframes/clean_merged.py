@@ -33,16 +33,19 @@ def run(df):
 
     #change type
     df['starting_at'] = df['starting_at'].apply(pd.to_datetime)
+    df['created_at'] = df['created_at'].apply(pd.to_datetime)
     df['ending_at'] = df['ending_at'].apply(pd.to_datetime)
     df['published_at'] = df['published_at'].apply(pd.to_datetime)
 
     #Changing format
     df['starting_at'] = df['starting_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
     df['ending_at'] = df['ending_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
     df['published_at'] = df['published_at'].dt.strftime('%Y-%m-%d %H:%M:%S')
 
     #Format change also changed the type to object, so we need to convert it to datetime again 
     df['starting_at'] = df['starting_at'].apply(pd.to_datetime)
+    df['created_at'] = df['created_at'].apply(pd.to_datetime)
     df['ending_at'] = df['ending_at'].apply(pd.to_datetime)
     df['published_at'] = df['published_at'].apply(pd.to_datetime)
 
