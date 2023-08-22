@@ -35,7 +35,7 @@ def run(df):
     df['starting_at'] = df['starting_at'].apply(pd.to_datetime)
     df['created_at'] = df['created_at'].apply(pd.to_datetime)
     df['ending_at'] = df['ending_at'].apply(pd.to_datetime)
-    df['form_created_at'] = df['form_created_at'].apply(pd.to_datetime)
+    # df['form_created_at'] = df['form_created_at'].apply(pd.to_datetime)
     df['published_at'] = df['published_at'].apply(pd.to_datetime)
     df['attended_at'] = df['attended_at'].apply(pd.to_datetime)
 
@@ -43,7 +43,7 @@ def run(df):
     df['starting_at'] = df['starting_at'].dt.strftime('%Y-%m-%d %H:%M')
     df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M')
     df['ending_at'] = df['ending_at'].dt.strftime('%Y-%m-%d %H:%M')
-    df['form_created_at'] = df['form_created_at'].dt.strftime('%Y-%m-%d %H:%M')
+    # df['form_created_at'] = df['form_created_at'].dt.strftime('%Y-%m-%d %H:%M')
     df['attended_at'] = df['attended_at'].dt.strftime('%Y-%m-%d %H:%M')
     df['published_at'] = df['published_at'].dt.strftime('%Y-%m-%d %H:%M')
 
@@ -52,7 +52,7 @@ def run(df):
     df['created_at'] = df['created_at'].apply(pd.to_datetime)
     df['ending_at'] = df['ending_at'].apply(pd.to_datetime)
     df['published_at'] = df['published_at'].apply(pd.to_datetime)
-    df['form_created_at'] = df['form_created_at'].apply(pd.to_datetime)
+    # df['form_created_at'] = df['form_created_at'].apply(pd.to_datetime)
     df['attended_at'] = df['attended_at'].apply(pd.to_datetime)
 
 
