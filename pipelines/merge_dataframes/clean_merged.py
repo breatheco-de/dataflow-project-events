@@ -52,7 +52,7 @@ def run(df):
     df['created_at'] = df['created_at'].apply(pd.to_datetime)
     df['ending_at'] = df['ending_at'].apply(pd.to_datetime)
     df['published_at'] = df['published_at'].apply(pd.to_datetime)
-    # df['form_created_at'] = df['form_created_at'].apply(pd.to_datetime)
+    df['form_created_at'] = df['form_created_at'].apply(pd.to_datetime)
     df['attended_at'] = df['attended_at'].apply(pd.to_datetime)
 
 
