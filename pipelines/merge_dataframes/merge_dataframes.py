@@ -54,6 +54,6 @@ def run(df, df2):
         (merged_df['starting_at'] < merged_df['form_created_at'])
     )
 
-    merged_df['won_at'] = merged_df['won_at'].apply(pd.to_datetime)
+    # merged_df['won_at'] = merged_df['won_at'].apply(pd.to_datetime)
 
     return merged_df
