@@ -38,6 +38,7 @@ def run(df):
     df['form_created_at'] = df['form_created_at'].apply(pd.to_datetime)
     df['published_at'] = df['published_at'].apply(pd.to_datetime)
     df['attended_at'] = df['attended_at'].apply(pd.to_datetime)
+    df['wont_at'] = df['wont_at'].apply(pd.to_datetime)
 
     #Changing format
     df['starting_at'] = df['starting_at'].dt.strftime('%Y-%m-%d %H:%M')
@@ -46,6 +47,7 @@ def run(df):
     df['form_created_at'] = df['form_created_at'].dt.strftime('%Y-%m-%d %H:%M')
     df['attended_at'] = df['attended_at'].dt.strftime('%Y-%m-%d %H:%M')
     df['published_at'] = df['published_at'].dt.strftime('%Y-%m-%d %H:%M')
+    df['wont_at'] = df['wont_at'].dt.strftime('%Y-%m-%d %H:%M')
 
     #Format change also changed the type to object, so we need to convert it to datetime again 
     df['starting_at'] = df['starting_at'].apply(pd.to_datetime)
@@ -54,6 +56,7 @@ def run(df):
     df['published_at'] = df['published_at'].apply(pd.to_datetime)
     df['form_created_at'] = df['form_created_at'].apply(pd.to_datetime)
     df['attended_at'] = df['attended_at'].apply(pd.to_datetime)
+    df['wont_at'] = df['wont_at'].apply(pd.to_datetime)
 
 
     #Replacements
