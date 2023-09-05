@@ -30,30 +30,15 @@ def run(df, df2):
     print('Shape of df before merge', df.shape)
     print('Shape of df2 before merge', df2.shape)
 
-    merged_df = pd.merge(df, df2, left_on="event_id", right_on="id").drop(['id','excerpt',
-                        'eventbrite_sync_description','eventbrite_url','eventbrite_id','banner'], axis=1)
 
-    print('Shape of merged_df', merged_df.shape)
+    merged_df = pd.merge(df, df2, left_on="event_id", right_on="id", how='left').drop(['id','excerpt',
+                        'eventbrite_sync_description','eventbrite_url','eventbrite_id','banner'], axis=1)
     
-    # Making sure that 'starting_at', 'attended_at' and 'form_created_at' are datetime fields
-    # Localizing to UTC if the object is timezone naive, otherwise converting to UTC timezone
-    for field in ['starting_at', 'attended_at', 'form_created_at']:
+    for field in ['starting_at', 'attended_at', 'form_created_at', 'won_at']:
         merged_df[field] = pd.to_datetime(merged_df[field])
         merged_df[field] = merged_df[field].dt.tz_localize('UTC', ambiguous='infer') if merged_df[field].dt.tz is None else merged_df[field].dt.tz_convert('UTC')
-    
-    # Sorting the dataframe by 'starting_at' column
-    merged_df = merged_df.sort_values('starting_at')
+        
 
-    # Adding 'is_new_registree' column
-    merged_df['is_new_registree'] = ~merged_df.duplicated('email')
-
-    # Adding 'won_after_event' column
-    merged_df['lead_after_event'] = (
-        (merged_df['form_ac_deal_id'].notna()) &
-        ((merged_df['form_created_at'] - merged_df['attended_at']).dt.days <= 15) &
-        (merged_df['starting_at'] < merged_df['form_created_at'])
-    )
-
-    # merged_df['won_at'] = merged_df['won_at'].apply(pd.to_datetime)
+    merged_df['is_new_registree'] = merged_df.groupby('email')['created_at'].transform(lambda x: x == x.min())
 
     return merged_df
