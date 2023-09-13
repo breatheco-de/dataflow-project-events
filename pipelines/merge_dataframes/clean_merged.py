@@ -29,8 +29,6 @@ expected_output = pd.DataFrame({
 
 def run(df):
     
-    #Clean dates
-
     #change type
     df['starting_at'] = df['starting_at'].apply(pd.to_datetime)
     df['created_at'] = df['created_at'].apply(pd.to_datetime)
@@ -39,6 +37,7 @@ def run(df):
     df['published_at'] = df['published_at'].apply(pd.to_datetime)
     df['attended_at'] = df['attended_at'].apply(pd.to_datetime)
     df['won_at'] = df['won_at'].apply(pd.to_datetime)
+
 
     #Changing format
     df['starting_at'] = df['starting_at'].dt.strftime('%Y-%m-%d %H:%M')
@@ -68,7 +67,7 @@ def run(df):
 
     #Replacing nulls with 'undefined'
 
-    df = df.replace(np.nan, 'Undefined', regex=True)
+    # df = df.replace(np.nan, 'Undefined', regex=True)
 
 
     #Assignations
@@ -84,7 +83,6 @@ def run(df):
                                                         194,199,201,202,206,216,208,252,214,251,254,368,357,124,207,210,215])),'en', 
                                                         df['lang'])
 
-                        
     return df
 
     

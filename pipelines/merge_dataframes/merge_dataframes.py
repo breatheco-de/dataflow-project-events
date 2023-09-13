@@ -40,5 +40,6 @@ def run(df, df2):
         
 
     merged_df['is_new_registree'] = merged_df.groupby('email')['created_at'].transform(lambda x: x == x.min())
-
+    print(merged_df.dtypes)
+    
     return merged_df
