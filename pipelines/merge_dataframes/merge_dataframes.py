@@ -39,7 +39,11 @@ def run(df, df2):
         merged_df[field] = merged_df[field].dt.tz_localize('UTC', ambiguous='infer') if merged_df[field].dt.tz is None else merged_df[field].dt.tz_convert('UTC')
         
 
-    merged_df['is_new_registree'] = merged_df.groupby('email')['created_at'].transform(lambda x: x == x.min())
-    print(merged_df.dtypes)
+    merged_df['is_new_registree'] = merged_df.groupby('email')['created_at'].transform(lambda x: x == x.min())4
     
+    # Print column names and their data types
+    print("Data types of merged_df:")
+    for column, dtype in merged_df.dtypes.items():
+        print(f"{column}: {dtype}")
+        
     return merged_df
