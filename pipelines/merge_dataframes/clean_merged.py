@@ -28,7 +28,7 @@ expected_output = pd.DataFrame({
 
 
 def run(df):
-    
+    print("Changing columns datatype")
     #change type
     df['starting_at'] = df['starting_at'].apply(pd.to_datetime)
     df['created_at'] = df['created_at'].apply(pd.to_datetime)
@@ -38,7 +38,9 @@ def run(df):
     df['attended_at'] = df['attended_at'].apply(pd.to_datetime)
     df['won_at'] = df['won_at'].apply(pd.to_datetime)
 
-
+    print("Columns converted succesfully")
+    print("Changing datetime formats")
+    
     #Changing format
     df['starting_at'] = df['starting_at'].dt.strftime('%Y-%m-%d %H:%M')
     df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M')
@@ -48,6 +50,7 @@ def run(df):
     df['published_at'] = df['published_at'].dt.strftime('%Y-%m-%d %H:%M')
     df['won_at'] = df['won_at'].dt.strftime('%Y-%m-%d %H:%M')
 
+    print("Changing Format again to datetime")
     #Format change also changed the type to object, so we need to convert it to datetime again 
     df['starting_at'] = df['starting_at'].apply(pd.to_datetime)
     df['created_at'] = df['created_at'].apply(pd.to_datetime)
@@ -59,6 +62,7 @@ def run(df):
 
 
     #Replacements
+    print("Replaceing commas")
 
     #Replacing commas in certain columns
     df['tags'] = df['tags'].str.replace(',', '|')
@@ -72,6 +76,7 @@ def run(df):
 
     #Assignations
 
+    print("assigning languages")
     #Assign language to events with missing info.
     df['lang'] = np.where((df['event_id'].isin([35,36,38,40,414,37,130,123,41,122,141,42,146,125,145,46,48,47,49,131,
                                                         127,85,86,84,121,128,119,181,189,184,135,134,136,182,192,193,137,138,
