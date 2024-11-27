@@ -38,7 +38,7 @@ def run(df, df2):
         merged_df[field] = pd.to_datetime(merged_df[field])
         merged_df[field] = merged_df[field].dt.tz_localize('UTC', ambiguous='infer') if merged_df[field].dt.tz is None else merged_df[field].dt.tz_convert('UTC')
         
-
+    print("adding a new column")
     merged_df['is_new_registree'] = merged_df.groupby('email')['created_at'].transform(lambda x: x == x.min())
     
     # Print column names and their data types
