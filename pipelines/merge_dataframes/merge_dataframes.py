@@ -29,15 +29,19 @@ def run(df, df2):
     """
     print('Shape of df before merge', df.shape)
     print('Shape of df2 before merge', df2.shape)
-    print("Start datetimes convertions")
+    print("Merging dataframes")
 
     merged_df = pd.merge(df, df2, left_on="event_id", right_on="id", how='left').drop(['id','excerpt',
                         'eventbrite_sync_description','eventbrite_url','eventbrite_id','banner'], axis=1)
     print("Start datetimes convertions")
     
     for field in ['starting_at', 'attended_at', 'form_created_at', 'won_at']:
-        merged_df[field] = pd.to_datetime(merged_df[field])
-        merged_df[field] = merged_df[field].dt.tz_localize('UTC', ambiguous='infer') if merged_df[field].dt.tz is None else merged_df[field].dt.tz_convert('UTC')
+        merged_df[field] = pd.to_datetime(merged_df[field], errors='coerce') 
+        if merged_df[field].dt.tz is None:
+            merged_df[field] = merged_df[field].dt.tz_localize('UTC', ambiguous='infer')
+        else:
+            merged_df[field] = merged_df[field].dt.tz_convert('UTC')
+
         
     print("adding a new column")
     merged_df['is_new_registree'] = merged_df.groupby('email')['created_at'].transform(lambda x: x == x.min())
