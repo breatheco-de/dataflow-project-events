@@ -85,10 +85,12 @@ def run(df):
 
 
     print("------------------------")
-    print("Data types and first 5 values of each column:")
+    print("Data types, null counts, and first 5 values of each column:")
     print("------------------------")
     for column in df.columns:
-        print(f"COLUMN: [{column}] TYPE: [{df[column].dtype}] SAMPLE: {df[column].head().values}")
+        null_count = df[column].isnull().sum()
+        print(f"COLUMN: [{column}] TYPE: [{df[column].dtype}] NULL COUNT: [{null_count}] SAMPLE: {df[column].head().values}")
         print("\n\n----")
+
 
     return df
