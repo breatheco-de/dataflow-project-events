@@ -34,10 +34,7 @@ def run(df, df2):
     merged_df = pd.merge(df, df2, left_on="event_id", right_on="id", how='left').drop(['id', 'excerpt',
                         'eventbrite_sync_description', 'eventbrite_url', 'eventbrite_id', 'banner'], axis=1)
 
-    print("------------------------")
-    print("Data types of merged_df:")
-    print("------------------------")
-    
+
     # Convert datetime fields
     datetime_columns = ['starting_at', 'attended_at', 'form_created_at', 'won_at']
     for field in datetime_columns:

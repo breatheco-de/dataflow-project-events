@@ -37,12 +37,12 @@ def run(df):
     datetime_columns = ['starting_at', 'ending_at', 'published_at', 'attended_at', 'form_created_at', 'won_at']
     for column in datetime_columns:
         if column in df.columns:
-            if not pd.api.types.is_datetime64_any_dtype(df[column]):
-                print(f"Converting column '{column}' to datetime...")
-                df[column] = pd.to_datetime(df[column], errors='coerce')
-                print(f"Conversion complete. Null values in '{column}': {df[column].isnull().sum()}")
-            else:
-                print(f"Column '{column}' is already in datetime format. No conversion needed.")
+            df[column] = pd.to_datetime(df[column], errors='coerce')
+            print(f"Conversion complete. Null values in '{column}': {df[column].isnull().sum()}")
+            # if not pd.api.types.is_datetime64_any_dtype(df[column]):
+            #     print(f"Converting column '{column}' to datetime...")
+            # else:
+            #     print(f"Column '{column}' is already in datetime format. No conversion needed.")
 
     print("Columns converted successfully.")
 
@@ -91,5 +91,14 @@ def run(df):
                                                   df['lang'])
 
     print("Language assignment complete. Sample languages: ", df['lang'].head())
+    
+        # Print data types and first 5 values of each column
+    print("------------------------")
+    print("Data types and first 5 values of each column:")
+    print("------------------------")
+    for column in df.columns:
+        print(f"COLUMN: [{column}] TYPE: [{df[column].dtype}] SAMPLE: {df[column].head().values}")
+        print("\n\n----")
+
 
     return df
